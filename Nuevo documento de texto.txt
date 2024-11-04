@@ -1,0 +1,29 @@
+CLIENTE(DNIclient:PK,NomCliente,ApellidoCliente,DireccionCalle)
+
+CASOS(CodigoCado:PK,EstadoCaso,FechaInicio,FechaFinal)
+
+PROCURADOR(DNIProcur:PK,NomProcurador,ApellidoProcurador,DireccionProcurador)
+
+LLEVA(CodigoCaso:PK,FK->CASO +DNIProcurador:PK,FK ->PROCURADOR)
+
+------------------------------------------------04/11/2024----------------------------------------------------
+
+PARTIDO ( id_partido:PK, campo, árbitro)
+
+EQUIPO( nombre_equipo:PK, color_camiseta,idCURSO: NN,FK->CURSO)
+
+CURSO( idCurso:PK)
+
+PARTICIPANTES( dni:PK, nombre_participante ,apellidos_participantes, dirección, teléfono, nombre_equipo:NN,FK->EQUIPO)
+
+JUEGA(nombre_equipo:PK,FK->EQUIPO+id_partido:PK,FK->PARTIDO,Incidencias, resultado)
+
+------------------------------------------------04/11/2024----------------------------------------------------
+
+Medico (Codigo_medico:PK, nombre_medico, apellidos_medico, teléfono_medico, especialid)
+
+Paciente (Codigo_paciente:PK, nombre_paciente, apellidos_paciente, telefono_paciente, fecha_paciente
+	   dirección_paciente, población, codigo_postal, probincia)
+
+Ingreso (Codigo_ingredo:PK, numero_habitación, cama_usada,fecha_ingredo
+	 codigo_medico: FK ->medico:NN, codigo_paciente:Fk->paciente:NN)
