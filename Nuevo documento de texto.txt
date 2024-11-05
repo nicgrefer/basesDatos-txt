@@ -6,7 +6,7 @@ PROCURADOR(DNIProcur:PK,NomProcurador,ApellidoProcurador,DireccionProcurador)
 
 LLEVA(CodigoCaso:PK,FK->CASO +DNIProcurador:PK,FK ->PROCURADOR)
 
-------------------------------------------------04/11/2024----------------------------------------------------
+-----------------------------------------------------------------------04/11/2024----------------------------------------------------------------------------
 
 PARTIDO ( id_partido:PK, campo, árbitro)
 
@@ -18,7 +18,7 @@ PARTICIPANTES( dni:PK, nombre_participante ,apellidos_participantes, dirección,
 
 JUEGA(nombre_equipo:PK,FK->EQUIPO+id_partido:PK,FK->PARTIDO,Incidencias, resultado)
 
-------------------------------------------------04/11/2024----------------------------------------------------
+-----------------------------------------------------------------------04/11/2024----------------------------------------------------------------------------
 
 Medico (Codigo_medico:PK, nombre_medico, apellidos_medico, teléfono_medico, especialid)
 
@@ -27,3 +27,41 @@ Paciente (Codigo_paciente:PK, nombre_paciente, apellidos_paciente, telefono_paci
 
 Ingreso (Codigo_ingredo:PK, numero_habitación, cama_usada,fecha_ingredo
 	 codigo_medico: FK ->medico:NN, codigo_paciente:Fk->paciente:NN)
+
+
+
+-----------------------------------------------------------------------05/11/2024----------------------------------------------------------------------------
+
+									--ZOO--
+
+Animal (nºidentificafor:PK, especie, sexo, año_nacimiento, país_orige, contiene
+	nombre_zoo:FK, NN->zoo                      // la relaccion es del lado 1 al n, por eso esta dentro de la tabla que corresponde la N
+	nombre_cientifico:FK, NN->Especie_animal)   // al pone que un animal como mínimo tiene que estar en un zoo por eso es NN (no nulo)
+
+Zoo (nombre_zoo:PK, ciudad, país, tamaño, presupuesto_anula)
+
+Especie_animal (nombre_científico:PK, nombre_vulgar, familia, peligor_extinción)
+
+
+
+
+-----------------------------------------------------------------------05/11/2024----------------------------------------------------------------------------
+
+					     			      --Gimnasio--
+
+Sala (nº_sala:Pk, tipo, tamaño, ubicación)
+
+Clase (id_clase:PK, descripción, sala_asignada)
+
+Monitor (DNI_minitor:PK, nombre_monitor, telefono monitor)
+
+Socios (nº_socio:PK, nombre_socio, telefono_socio, profesión_socio, clases_asisten, datos_bancarios)
+
+Pistas_squas (id_pista:PK, ubicación, estado_pista, numero_pista)
+
+Reserbas (id_reserba:PK, fecha, hora)
+
+
+
+
+
