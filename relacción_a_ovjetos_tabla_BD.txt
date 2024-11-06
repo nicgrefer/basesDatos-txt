@@ -49,27 +49,27 @@ Especie_animal (nombre_científico:PK, nombre_vulgar, familia, peligor_extinció
 
 					     			      --Gimnasio--
 
-Sala (nº_sala:Pk, tipo, tamaño, ubicación)
+Aparato(CodAparato:PK, descripción, EstadoConservación
+	NumSala:FK NN --> SALA)
 
-Clase (id_clase:PK, descripción, sala_asignada, hora, dia
-	nº_sala:FK->sala
-	DNI_monitor:FK NN->monitor)
+Sala(NumeroSala:PK, MetrosCuarados, Ubicacion, TipoSala)
 
-Monitor (DNI_minitor:PK, nombre_monitor, telefono monitor)
+Clase(CodigoClase:PK, Descripción, Hora, Dia
+	NumeroSala:FK NN --> SALA, 
+	DNIMonitor:FK NN --> MONITOR)
 
-Socios (nº_socio:PK, nombre_socio, telefono_socio, profesión_socio, clases_asisten, datos_bancarios)
+Monitor(DNIMonitor:PK, NombreMonitor, TelefonoMonitor)
 
-Pistas_squas (id_pista:PK, ubicación, estado_pista, numero_pista)
+Socio(NumSocio:P, Profesión, DatosBancarios, TelefonoSocio, Nombre, Direccion)
 
-Reserbas (id_reserba:PK, fecha, hora
-	  nº_socio:FK NN ->socio
-	  id_pista:FK NN ->pistas_squas)
+Reserva(Fecha+Hora:PK)
 
-Apararo (codigo:PK, estado, descripción   //Propagamos la clave del lado 1 al lado N
-	  nº_sala:FK NN->sala)
+PistaSquash(NumeroPista:PK, Ubicación, Estado)
 
+AsisteA((CodClase:FK --> CLASE + NumeroSocio:FK --> SOCIO):PK)
 
-
+Realiza((NumeroSocio:FK --> SOCIO + NumeroPista:FK --> PISTA +
+(Fecha + hora:FK -->RESERVA)):PK)
 
 
 
