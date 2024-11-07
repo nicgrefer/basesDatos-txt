@@ -72,6 +72,32 @@ Realiza((NumeroSocio:FK --> SOCIO + NumeroPista:FK --> PISTA +
 (Fecha + hora:FK -->RESERVA)):PK)
 
 
+-----------------------------------------------------------------------07/11/2024----------------------------------------------------------------------------
+
+					     			     --Casa rural--
+
+Actividad_multiaventura (Codigo:PK, Nombre_actividad, Descripcion, Nivel_dificultad)
+
+Organiza (Codigo->Actividad_multiaventura+IDalojamiento --> AlojamientoRural:PK
+	  dia_semana)
+
+AlojamientoRural (IDalojamiento:PK, Nombre, Direccion, Telefono, Nºhabitaciones)
+
+Habitacion ((ID_habitacion + ID_alojamiento: FK --> Alojamiento_Rural):PK, Tipo, Precio, CuartoDeBaño)
+
+Personal (Codigo_Personal:PK, NIF, Nombre_Personal, Apellidos_Personal, Direccion, Persona_Contacto:NN
+	  IDalojamiento:FK --> AlojamientoRural)
+
+
+
+
+
+
+
+
+
+
+
 
 
 
