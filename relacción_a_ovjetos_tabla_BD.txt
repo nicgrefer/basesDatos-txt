@@ -88,8 +88,29 @@ Habitacion ((IDhabitacion+IDalojamiento:FK->AlojamientoRural):PK,Tipo,Precio,Cua
 Personal(CodigoPersonal:PK,NIF:U,NombrePersonal,ApellidosPersonal,Direccion,PersonaContacto
 	  IDalojamiento:FK,NN->AlojamientoRural)
 
+-----------------------------------------------------------------------07/11/2024----------------------------------------------------------------------------
 
+					     		          --compañia aérea--
 
+Pilotos (codigo_personal:PK, nombre_personal, apeyidos_personal, horas_vuelo
+	 id_base:FK -->base)
+
+Tripulación (codigo_personal:PK, nombre_personal, apeyidos_personal
+	      id_base:FK -->base)
+
+Base (id_base:PK, localización
+      codigo_avion:FK --> avion)
+
+Avion (codigo_avion:PK, tipo_avion
+	id_base:FK -->base)
+
+Vuelo (nº_vuelo:PK, origen, destino, hora
+	codigo_avion:FK --> avion
+	codigo_personal --> piloto)
+
+Trabaja ((codigo_personal:Fk --> tripulación + nº_vuelo --> vuelos):PK)
+
+Viaje ((id_viaje + nº_vuelo:FK -->vuelo):PK, fecha_viaje)
 
 
 
