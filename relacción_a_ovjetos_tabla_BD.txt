@@ -112,11 +112,68 @@ Trabaja ((codigo_personal:Fk --> tripulación + nº_vuelo --> vuelos):PK)
 
 Viaje ((id_viaje + nº_vuelo:FK -->vuelo):PK, fecha_viaje)
 
+-----------------------------------------------------------------------11/11/2024----------------------------------------------------------------------------
 
+					     		          --compañia aérea--
 
+NIÑO (
+	numero_matricula: PK,
+	nombre_n, apellidos_n, fecha_nacimiento_n, fecha_ingreso_n, fecha_baja_n, coste_fijo_n
+)
 
+RECOGE (
+	numero_matricula: FK -> NIÑO + dni: FK -> PERSONA_AUTORIZADA): PK, 
+	parentesco
+)
 
+PERSONA_AUTORIZADA (
+	dni: PK,
+	nombre_rep, apellidos_rep, direccion
+	abonador (boolean), ccc
+)
 
+TELÉFONO (
+	num_telefono: PK,
+	dni:NN,FK -> PERSONA_AUTORIZADA 
+)
+
+((ABONADOR (
+	dni:NN,FK -> PERSONA_AUTORIZADA: PK
+	ccc
+)))	
+
+MENÚ (
+	numero_menú:PK
+	precio_menú
+)
+
+CONSUME (relación NIÑO/MENÚ) (
+	(id_matricula:FK -> NIÑO + id_menu:FK -> MENÚ) PK
+	fecha
+)
+
+PLATO (
+	nombre_plato:PK
+)
+
+FORMADO (relación MENÚ/PLATO) (
+	id_menú:NN:FK -> MENÚ + nombre_plato:NN:FK -> PLATO: PK
+	
+)
+
+INGREDIENTE (
+	nombre_ingrediente: PK
+)
+
+FORMA (relación PLATO/INGREDIENTE)
+	(nombre_plato:NN:FK -> PLATO +
+	nombre_ingrediente:NN:FK -> INGREDIENTE): PK
+)
+
+ALERGIA (relación NIÑO/INGREDIENTE) (
+	id_matricula:PK:FK -> NIÑO +
+	nombre_ingrediente: FK -> INGREDIENTE : PK
+)
 
 
 
