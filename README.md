@@ -96,3 +96,28 @@ select emp.ename from scott.emp where emp.ename like 'W___' or emp.ename like 'w
 -- mostrar los empleados cuya comision sea 0
 select emp.ename from scott.emp where emp.com like "null";
 
+
+----------------------------------------------------
+--Prueba de funciones oracle 
+select power (2,3) from dual;
+select round (3,456.1)from dual;
+
+select floor (3.4), floor (3.8) from dual;
+
+select * from scott.emp
+-- Muest al sueldo de los empleados aplicando las comisiones (emplearemos NVL(valor,expresión))
+
+select emp.empno, emp.ename, emp.sal "salario base", emp.comm "Comisión", 
+    (emp.sal+nvl(emp.comm,0)) "Sueldo + comisión"
+    from scott.emp;
+
+--  Funciones de grupos de valores
+
+select sum(emp.sal) "Salario del departamento" from scott.emp  where emp.deptno=20;
+
+-- mostrar el nº de empleados que existe 
+select count (emp.comm) from scott.emp;
+select count (emp.empno) from scott.emp;
+select count ()
+
+
