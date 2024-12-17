@@ -1,1 +1,98 @@
-# basesDatos-txt
+# basesDatos teoria consultas 
+-- Consulta de una tabla
+-- 1. Mostrar el nº y nombre de los departamentos
+select deptno, dname from scott.dept;
+--2. mostrar todos los datos de los departamentos
+select * from scott.dept;
+--  ordenamos por nombre del departamento
+select dname, deptno from scott.dept order by dname asc;
+--3. mostramos todos los departamenrtos con ales en lascolumnas
+select dname "Nº departamento", deptno "Nombre del departamento", loc "Ubicación" from scott.dept;
+
+----------------------------------------------------------
+--TRABAJAMOS CON CONDICIONES: WHERE condición
+select * from scott.emp;
+select * from scott.dept;
+
+desc scott.emp;
+desc scott.dept;
+
+--Mostramos los empleados cuyo salario supera los 2000€
+select emp.empno, emp.name, emp.sal from scott.emp
+where emp.sal > 2000
+order by emp.sal;
+
+--Mostrar los empleados que tienen comisiones
+select emp.empno, emp.ename, emp.deptno
+from scott.emp
+where emp.deptno = 20
+order by emp.name;
+
+--Mostrar lo empleados que tienen comisiones
+select emp.empno, emp.name, emp.comm
+from scott.emp
+where emp.comm is not null;
+
+--Mostrar los empleados que no tienen comisiones asignadas
+select emp.empno, emp.name,emp.job, emp.comm
+from scott.emp
+where emp.comm is null;
+
+--Mostrar los empleados que no tienen manager asignado
+select emp.empno, emp.name,emp.job, emp.mgr
+from scott.emp
+where emp.mgr is null;
+
+--Mostrar como quedarian los salarios de los empleados tras un incremento del 5%
+select emp.empno, emp.ename, emp.sal "Salario actual", (emp.sal * 1.05) "Salario con subida del 5%"
+from scott.emp
+order by 4 desc;
+
+--Mostrar los departamentos ubicados en 'Dallas' y 'Boston'
+select dept.*from scott.dept
+where dept.loc = 'DALLAS' or dept.loc = 'BOSTON';
+
+--Mostrar los empleados que trabajan en el departamento 10 y tienen de jefe al empleado 7839
+select emp.empno, emp.ename, emp.deptno, emp.mgr
+from scott.dept
+where emp.dept=10 and emp.mgr=7839;
+
+--------------------------16/12/2024--------------------------------
+
+desc scott.emp;
+desc scott.dept;
+
+
+selectfrom scott.emp order by 4;
+---OPERADOR BETWEEN
+selectfrom scott.emp where emp.sal between 1000 and 2000 order by emp.sal desc;
+selectfrom scott.emp where emp.sal >= 1000 and emp.sal <= 2000 order by emp.sal desc;
+
+selectfrom scott.emp where emp.sal not between 1000 and 2000 order by emp.sal desc;
+selectfrom scott.emp where emp.sal < 1000 or emp.sal > 2000 order by emp.sal desc;
+
+
+--mostrar los empleados cuyo jefe es el 7782, 7902 o 7839
+selectfrom scott.emp where emp.mgr = 7782 or emp.mgr = 7902 or emp.mgr = 7839;
+selectfrom scott.emp where emp.mgr in(7782,7902,7839);
+
+--mostras los empleados cuyo jefe NO es el 7782, 7902 o 7839 
+selectfrom scott.emp where emp.mgr not in(7782,7902,7839);
+select*from scott.emp where emp.mgr != 7782 and emp.mgr != 7902 and emp.mgr != 7839;
+
+
+--mostrar los empleados contratados en  el año  81 
+--a)
+select emp.ename, emp.hiredate from scott.emp where emp.hiredate like '%-81';
+--b)
+select emp.ename, emp.hiredate from scott.emp where emp.hiredate between '01-JAN-81' and '31-DC-81';
+
+
+--mostrar los empleados cuyo nombre acaba en 's'
+select emp.ename from scott.emp where emp.ename like '%s' or emp.ename like '%S';
+--mostrar los empleados cuyo nombre tiene 4 caracteres y empieza por 'A'
+select emp.ename from scott.emp where emp.ename like 'W___' or emp.ename like 'w___';
+
+-- mostrar los empleados cuya comision sea 0
+select emp.ename from scott.emp where emp.com like "null";
+
