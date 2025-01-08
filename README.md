@@ -120,4 +120,30 @@ select count (emp.comm) from scott.emp;
 select count (emp.empno) from scott.emp;
 select count ()
 
+------------------------------------------------------
+08/01/2025
 
+-- mostrar los datos del empleado con su departamento asociado pero quiero que salga el nombre
+
+select * from scott.emp;
+select * from scott.dept;
+
+-- Cualificamos los datos que sacamos para que no se repitan, para ello hay que poner condiciones
+
+select emp.*,dept.dname "Nombre departamento" from scott.emp, scott.dept
+    where emp.deptno=dept.deptno
+    order by emp.deptno;
+
+------
+-- Consultas multitabla script empresa
+-- Mostrar los vendedores (nombre,edad,fecha de contrato)
+-- junto con la oficina (ciudad) con los que estan asignado
+-- ordenado por ventas de vendedor
+--Mostrar los vendedores junto con la oficina (ciudad) a la que están asignados
+--ordenando los resultados por ventas del vendedor
+
+select repventas.nombre, repventas.edad, repventas.contrato,
+       oficinas.oficina, oficinas.ciudad, repventas.ventas
+from repventas, oficinas
+where repventas.oficina_rep = oficinas.oficina
+order by repventas.ventas;
