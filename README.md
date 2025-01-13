@@ -170,7 +170,69 @@
     order by  vendedores.num_empl;
 
      -----------
-(hr)
+-------
+13/01/2025
+
+	-- 1. Muestra las reguiones con los paises a los que pertenece
+	
+	select regions.region_id,regions.region_name, countries.country_id
+	from hr.regions, hr.countries
+		where regions.region_id = countries.region_id
+	order by countries.region_id;
+	
+	-- 2. Muestra para cada empleado (id, nombre y apellido) los trabajos que han pasado y la fecha de inicio y fin
+	
+	SELECT employees.employee_id, employees.first_name, employees.last_name,
+	       job_history.start_date, job_history.end_date, job_history.job_id
+	FROM hr.employees, hr.job_history
+	 where employees.employee_id = job_history.employee_id
+	ORDER BY 3;
+	
+	-- 2.V2
+	
+	SELECT employees.employee_id, employees.first_name, employees.last_name,
+	       job_history.start_date, job_history.end_date, job_history.job_id
+	FROM hr.employees, hr.job_history, hr.jobs
+	 	where employees.employee_id = job_history.employee_id
+	    and jobs.job_id = job_history.job_id
+	ORDER BY 3;
+	
+	-- 3. Muestra los empleados que tienen de jefe al empleado con código 100 o 108.
+	-- 	Ademas que tenguen un salario de mas de 5000$, mostrando el puesto que ocupan y su salario
+	
+	select employees.employee_id, employees.first_name, employees.last_name, employees.manager_id,employees.salary,
+	    jobs.job_id, jobs.job_title
+	from hr.employees, hr.jobs
+		where employees.job_id=jobs.job_id
+		and employees.manager_id in (100,108)
+		and employees.salary>5000;
+	
+	-- 3.V2
+	
+	select emp.employee_id, emp.first_name, emp.last_name, emp.manager_id,mg.first_name, mg.last_name,
+	    emp.salary,
+	    jobs.job_id, jobs.job_title
+	from hr.employees emp, hr.jobs,hr.employees mg
+		where emp.job_id=jobs.job_id
+	    and emp.manager_id=mg.employee_id
+		and emp.manager_id in (100,108)
+		and emp.salary>5000
+	order by 1;
+	
+	-- 4. Muestra las localidades junto con los departamentos que  
+	
+	SELECT locations.*, departments.department_id, departments.department_name
+	FROM hr.locations, hr.departments
+		where locations.location_id = departments.location_id
+	order by departments.department_id;
+	
+	-- 4.V2
+	
+	SELECT locations.*, departments.department_id, departments.department_name
+	FROM hr.locations, hr.departments
+		where locations.location_id = departments.location_id
+	    and locations.country_id <> 'US'
+	order by departments.department_id;
 
 
 
