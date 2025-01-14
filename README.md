@@ -235,5 +235,18 @@
 	order by departments.department_id;
 
 
-
+----
+revisar para que funcione 14/01/2025
+	
+	-- 6. mostrar los departamentos junto con el nombre del director 
+	
+	select departments.department_id "ID departamento",departments.department_name "Nombre Departamento", employees.employee_id "ID director"
+	from hr.departments, hr.job_history
+		where departments.manager_id =employees.manager_id;
+	
+	-- 6.V2 Que tamben muestre los que no tienen director
+	select departments.department_id "ID departamento",departments.department_name "Nombre Departamento", job_history.employee_id "ID director"
+	from hr.departments, hr.job_history
+		where departments.manager_id =job_history.employee_id
+	    or departments.manager_id is null;
 
