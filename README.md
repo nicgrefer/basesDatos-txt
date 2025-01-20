@@ -250,3 +250,63 @@ revisar para que funcione 14/01/2025
 		where departments.manager_id =job_history.employee_id
 	    or departments.manager_id is null;
 
+
+-----
+20/01/2025
+
+Group by
+
+	-- Muestra el salario medio por departamentos
+	
+	select * from hr.departments;
+	select * from hr.employees order by  department_id;
+	
+	SELECT employees.department_id AS "id departamento",
+	       departments.department_name AS "Nombre departamento", 
+	       ROUND(AVG(employees.salary), 4) AS "media salario departamento"
+	FROM hr.employees, hr.departments
+	WHERE employees.department_id = departments.department_id
+	GROUP BY employees.department_id, departments.department_name
+	ORDER BY employees.department_id;
+	
+	
+	-- Muestra el numero de cada paises que hay en cada región
+	
+	select * from hr.regions ;
+	select * from hr.countries order by countries.region_id;
+	
+	
+	SELECT countries.region_id AS "id Region",regions.region_name "Region", COUNT(*) AS "Numero de Paises"
+	FROM hr.countries, hr.regions
+	    where countries.region_id=regions.region_id
+	GROUP BY countries.region_id,regions.region_name
+	ORDER BY countries.region_id;
+	
+	-- Muestra el numero de empleados que tiene cada manager a su cargo
+	
+	select * from hr.employees order by  manager_id;
+	
+	select employees.manager_id , count (*) "Nº de empleados a su cargo"
+	from hr.employees
+	group by employees.manager_id
+	order by 2 desc;
+	
+	-- Muestra el numero qde enpleados que hay en cada departamento
+	
+	select employees.department_id "id departamento" , count (*) "nº se empleados en departamento"
+	from hr.employees
+	group by employees.department_id
+	order by employees.department_id;
+	
+	
+	-- Muestra el numero de rotaciones ha realizado dentro de la empresa
+	
+	select job_history.employee_id "Id empleado", count (*) "nº rotaciones empleado"
+	from  hr.job_history
+	group by job_history.employee_id;
+	
+	
+	
+	-- Todabia no sabemos
+	-- Muestra el numero de empleados que han pasado (rotado) por mas de un puesto en la empresa
+
