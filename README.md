@@ -307,6 +307,70 @@ revisar para que funcione 14/01/2025
 	group by job_history.employee_id,employees.first_name;
 	
 	
+
+ # Having
+21/01/2025
+ Es una condición que se aplica a los grupos
+ 
+	-- Muestra el salario medio por departamentos, pero solo de los departamentos que tengan + de 5 empleados
+
+	select * from hr.employees order by  department_id;
 	
-	-- Todabia no sabemos
+	SELECT employees.department_id AS "id departamento",
+	       departments.department_name AS "Nombre departamento", 
+	       ROUND(AVG(employees.salary), 4) AS "media salario departamento"
+	FROM hr.employees, hr.departments
+	WHERE employees.department_id = departments.department_id
+	GROUP BY employees.department_id, departments.department_name
+	having count(*)>5
+	ORDER BY employees.department_id;
+	
+	
+	-- Muestra el salario medio por departamentos, pero solo de los departamentos que tengan + de 5 empleados y teniendo en cuenta
+	-- a los empleados que llevan < de 20 años contratado
+	
+	SELECT employees.department_id AS "id departamento",
+	       departments.department_name AS "Nombre departamento", 
+	       ROUND(AVG(employees.salary), 4) AS "media salario departamento"
+	FROM hr.employees, hr.departments
+	WHERE employees.department_id = departments.department_id
+	    and (sysdate - employees.HIRE_DATE)<20*365
+	GROUP BY employees.department_id, departments.department_name
+	having count(*)>5 
+	ORDER BY employees.department_id;
+	
+	
+	
 	-- Muestra el numero de empleados que han pasado (rotado) por mas de un puesto en la empresa
+	
+	select job_history.employee_id "Id empleado",employees.first_name "Nombre", count (*) "nº rotaciones empleado"
+	from  hr.job_history, hr.employees
+	group by job_history.employee_id,employees.first_name
+	    having count(*)>1;
+	
+	-- Muestra el numero de empleados que han pasado (rotado) por mas de un puesto en la empresa que pertenezca al departameno
+	-- de "Ventas" o de "Marketing"
+	
+	SELECT job_history.employee_id AS "Id empleado",
+	    employees.first_name AS "Nombre",
+	    COUNT(*) AS "nº rotaciones empleado"
+	FROM  hr.job_history, hr.departments, hr.employees
+	    where job_history.employee_id = employees.employee_id
+	    and  departments.department_id = employees.department_id
+	    and  departments.department_name IN ('Sales', 'Marketing')
+	GROUP BY 
+	    job_history.employee_id, employees.first_name
+	HAVING COUNT(*) > 1;
+
+-- Muestra el numero de empleados contratasos em cada mes
+
+-- Muestra cuantos empleados an sido contratados en el mes de julio
+
+-- Muestra el departamento con mas empleados
+
+-- Muestra la reguion con mas paises
+
+-- Muestra el manager con mas empleados a su cargo
+
+
+
