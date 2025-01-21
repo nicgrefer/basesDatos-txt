@@ -362,15 +362,45 @@ revisar para que funcione 14/01/2025
 	    job_history.employee_id, employees.first_name
 	HAVING COUNT(*) > 1;
 
--- Muestra el numero de empleados contratasos em cada mes
 
--- Muestra cuantos empleados an sido contratados en el mes de julio
+---
 
--- Muestra el departamento con mas empleados
-
--- Muestra la reguion con mas paises
-
--- Muestra el manager con mas empleados a su cargo
+	
+	-- Muestra el numero de empleados contratasos em cada mes
+	
+	-- Muestra cuantos empleados han sido contratados en el mes de julio
+	
+	
+	-- Muestra el departamento con mas empleados
+	select * from hr.departments;
+	select * from hr.employees;
+	
+	select departments.DEPARTMENT_NAME,count (employees.employee_id) "nº de empleados"
+	from hr.employees, hr.departments
+		where employees.department_id =departments.department_id
+	group by departments.DEPARTMENT_NAME
+	order by 2 desc
+	FETCH FIRST 1 ROWS ONLY;
+	
+	
+	-- Muestra la reguion con mas paises
+	
+	select regions.region_name, count (countries.country_id) "nº de paises"
+	from hr.regions, hr.countries
+	    where countries.region_id=regions.region_id
+	group by regions.region_name
+	order by 2 desc
+	FETCH FIRST 1 ROWS ONLY;
+	
+	-- Muestra el manager con mas empleados a su cargo
+	
+	select * from hr.employees;
+	
+	select  mg.manager_id, count (emp.employee_id) "Empleados a su cargo"
+	from hr.employees emp, hr.employees mg
+	group by mg.manager_id
+	order by 2 desc
+	fetch first 1 row only;
 
 
 
