@@ -368,8 +368,19 @@ revisar para que funcione 14/01/2025
 	
 	-- Muestra el numero de empleados contratasos em cada mes
 	
-	-- Muestra cuantos empleados han sido contratados en el mes de julio
+	select to_char (employees.hire_date, 'yyyy-mm') "Mes", count (employees.employee_id) "nº empleados"
+	from hr.employees
+	group by to_char (employees.hire_date, 'yyyy-mm')
+	order by 1;
+	    
 	
+	-- Muestra cuantos empleados han sido contratados en el mes de julio = 6
+	
+	select to_char(employees.hire_date, 'mm') "Mes (¿junio?)", count (employees.employee_id) "nº empleados"
+	from hr.employees
+	group by to_char (employees.hire_date, 'mm')
+	    having to_char (employees.hire_date, 'mm') =6
+	order by 1;
 	
 	-- Muestra el departamento con mas empleados
 	select * from hr.departments;
@@ -401,6 +412,4 @@ revisar para que funcione 14/01/2025
 	group by mg.manager_id
 	order by 2 desc
 	fetch first 1 row only;
-
-
-
+	
