@@ -1,4 +1,9 @@
 # basesDatos teoria consultas 
+
+
+> [!NOTE]  
+> Esto es las propias consultas que hemos realizado en clase y puede ser que halla cosas que no estén del todo bien.
+
     -- Consulta de una tabla
     -- 1. Mostrar el nº y nombre de los departamentos
     select deptno, dname from scott.dept;
