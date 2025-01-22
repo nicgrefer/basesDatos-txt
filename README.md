@@ -425,3 +425,21 @@ revisar para que funcione 14/01/2025
 >  having count(*)= (select max (count (*)))from hr.employees
 >
 >	 group by to_char (empleyees.hire_date, 'MONTH')
+
+
+# OUTER JOIN
+
+borrador
+
+	create table chicas (
+	    nombre varchar2(30),
+	    provincia varchar2(10)
+	);
+	
+	
+	insert into chicos values ("Juan","VA")
+	insert into chicos values ("Pedro","VA")
+	insert into chicos values ("Luis","LE")
+	insert into chicos values ("Pablo","Pa")
+	insert into chicos values ("Juan","VA")
+	insert into chicos values ("Alberto","PA")
