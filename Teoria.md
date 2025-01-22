@@ -8,6 +8,7 @@
 - [ ] OUTER JOIN
 - [ ] UNION, INTERSECT, MINUS
 
+
 # Estructura base
 ## Select
 
@@ -24,7 +25,7 @@ Esto selecciona un objeto/elemento que selecciones o con el "*" para seleccionar
       SELECT nom_alumno, nota 
       FROM Alumnos
 
-- Tambien se le puede dar un alias a cada tabla 
+- También se le puede dar un alias a cada tabla 
 
   
        SELECT A.nom_alumno, A.nota
@@ -32,7 +33,7 @@ Esto selecciona un objeto/elemento que selecciones o con el "*" para seleccionar
 
 ### Alias de columnas
 
-Dentro de los from se puede dar un alias o otro nombre para la mejor comprendion a la hora de representar la tabla
+Dentro de los from se puede dar un alias o otro nombre para la mejor comprensión a la hora de representar la tabla
 
     SELECT nom_dpto “Departamento”, num_dpto “Nº departamento”
     FROM Departamentos;
@@ -47,7 +48,7 @@ Ejemplo:
 
 ## Where 
 
-Es una condicion que se deve cumplir para que la consulta se realice correctamente
+Es una condición que se debe cumplir para que la consulta se realice correctamente
 
      WHERE nota=5;
      WHERE (nota>=10) AND (curso=1);
@@ -149,5 +150,3 @@ Se puede colocar las palabras ASC o DESC, que significan ascendente o descendent
 |TO_CHAR (numero, ‘formato’) |Convierte un número (de tipo NUMBER) a tipo VARCHAR2 en el formato especificado|
 |TO_DATE (cadena, ‘formato’) |Convierte ‘cadena’ de tipo VARCHAR2 o CHAR, a un valor de tipo DATE según el formato especificado|
 |TO_NUMBER (cadena [,‘formato’]) |Convierte ‘cadena’ de tipo NUMBER según el formato especificado|
-
-
