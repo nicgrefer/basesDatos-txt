@@ -417,4 +417,11 @@ revisar para que funcione 14/01/2025
 	group by mg.manager_id
 	order by 2 desc
 	fetch first 1 row only;
-	
+
+
+ >[!TIP]
+>Se puede hacer *sub consultas* como en el siguiente ejemplo
+>
+>  having count(*)= (select max (count (*)))from hr.employees
+>
+>	 group by to_char (empleyees.hire_date, 'MONTH')
