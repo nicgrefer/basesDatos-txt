@@ -3,6 +3,9 @@
 
 > [!NOTE]  
 > Esto es las propias consultas que hemos realizado en clase y puede ser que halla cosas que no estén del todo bien.
+----
+> [!TIP]
+> La [teoría](https://github.com/nicgrefer/basesDatos-txt/blob/main/Teoria.md) la puedes encontrar aquí
 
     -- Consulta de una tabla
     -- 1. Mostrar el nº y nombre de los departamentos
