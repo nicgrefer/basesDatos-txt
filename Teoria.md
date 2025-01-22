@@ -1,3 +1,6 @@
+>[!NOTE]
+>Todabia no esta completo 
+
 
 # Estructura base
 ## Select
@@ -102,7 +105,7 @@ ej:
 
 ### LIKE
 
-Para comparar cadenas de caracteres que cumplan un patrón no nos sirve el operador "="
+Para comparar cadenas de caracteres que cumplan un patrón no nos sirve el operador  `"="`
 
 |Operador|Significado|
 |--------|-----------|
@@ -122,4 +125,23 @@ Con esta funcion se puede ordenar la tabla por el valor que se quiera, podiendo 
 Se puede colocar las palabras ASC o DESC, que significan ascendente o descendente respectivamente(por defecto se toma ASC).
 
 
-##
+# Principales Funciones 
+[Todas las funciones](https://github.com/nicgrefer/basesDatos-txt/blob/main/Funciones%20ORACLE.pdf)
+
+|Funcion|Descripcción|
+|--|--|
+|ABS()|Valor absoluto|
+|ROUND(numero [,m])|Devuelve el valor de ‘numero’ redondeado a ‘m’ decimales|
+|AVG(n) |Calcula el valor medio de ‘n’ ignorando los valores nulos|
+|COUNT(* | expresión)| Cuenta el número de veces que la expresión evalúa algún dato con valor no nulo. La opción * cuenta todas las filas seleccionadas|
+|CONCAT (cad1, cad2)| Devuelve 'cad1' concatenada con 'cad2'. Es equivalente al operador barra barra (recta) |
+|LPAD `o` RPAD (cad1, n [, cad2]) | Para añadir a la izuierda (lpad) o derecha (rpad)  de 'cad1' hasta que alcance una cierta longitud 'n' siendo `cad2` lo que quieres que represente esos espacios|
+|LTRIM `o` RTRIM (cad [, set])| Suprime un conjunto de caracteres a la izquierda o derecha de la cadena 'cad'; 'set' es el conjunto de caracteres a suprimir |
+|SUBSTR (cad, m [,n])| Obtiene parte de una cadena. Devuelve la subcadena de 'cad', que abarca desde la posición indicada en 'm' hasta tantos caracteres como indique el número 'n'|
+|SYSDATE |Devuelve la fecha del sistema|
+|TO_CHAR (fecha, ‘formato’) |Convierte una fecha (de tipo DATE) a tipo VARCHAR2 en el formato especificado|
+|TO_CHAR (numero, ‘formato’) |Convierte un número (de tipo NUMBER) a tipo VARCHAR2 en el formato especificado|
+|TO_DATE (cadena, ‘formato’) |Convierte ‘cadena’ de tipo VARCHAR2 o CHAR, a un valor de tipo DATE según el formato especificado|
+|TO_NUMBER (cadena [,‘formato’]) |Convierte ‘cadena’ de tipo NUMBER según el formato especificado|
+
+
