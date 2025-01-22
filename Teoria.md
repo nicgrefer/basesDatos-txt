@@ -1,6 +1,12 @@
 >[!NOTE]
 >Todabia no esta completo 
 
+- [x] Estructura base 
+- [x] Funciones
+- [ ] Join
+- [ ] Group by
+- [ ] OUTER JOIN
+- [ ] UNION, INTERSECT, MINUS
 
 # Estructura base
 ## Select
