@@ -434,15 +434,65 @@ revisar para que funcione 14/01/2025
 
 borrador
 
-	create table chicas (
-	    nombre varchar2(30),
-	    provincia varchar2(10)
-	);
+> [Script a ejecutar para realizar las actividads](https://github.com/nicgrefer/basesDatos-txt/blob/main/consulta%20chicos-chicas.sql)
+>
+
+	-- Mostrar las parejas que estan en la misma provincia
 	
+	--Iner join
+	select chicos.*, chicas.*
+	from chicos,chicas
+	where chicos.provincia=chicas.provincia;
+	---
+	select chicos.*, chicas.*
+	from chicos inner join chicas
+	on chicos.provincia=chicas.provincia;
+
+---
+	-- Outer join
+	-- integra chicos sin pareja
+		select chicos.*, chicas.*
+		from chicos,chicas
+		where chicos.provincia =chicas.provincia(+);
 	
-	insert into chicos values ("Juan","VA")
-	insert into chicos values ("Pedro","VA")
-	insert into chicos values ("Luis","LE")
-	insert into chicos values ("Pablo","Pa")
-	insert into chicos values ("Juan","VA")
-	insert into chicos values ("Alberto","PA")
+	select chicos.*, chicas.*
+		from chicos left outer join chicas
+		on chicos.provincia=chicas.provincia;
+---
+	-- Incluye a los resultados las chicas sin paraja (no tiene chicos en sus provincias)
+	
+		select chicos.*, chicas.*
+		from chicos,chicas
+		where chicos.provincia (+) =chicas.provincia;
+	
+	select chicos.*, chicas.*
+		from chicos right outer join chicas
+		on chicos.provincia=chicas.provincia;
+---
+
+	-- Incluye a los resultados a los chicos y chicas sin pareja
+	
+	select chicos.*, chicas.*
+		from chicos full outer join chicas
+		on chicos.provincia=chicas.provincia;
+
+	--HR
+	
+	-- Mosrar el nº de empleados que hay por departamento incluyendo a los que no tienen empleados
+	
+	SELECT departments.department_id, departments.department_name, COUNT(*) "nº de empleados"
+	FROM hr.departments left outer JOIN hr.employees 
+	ON departments.department_id = employees.department_id
+	GROUP BY departments.department_id, departments.department_name
+	ORDER BY 1;
+
+ ----
+ > [Tabla 3](https://github.com/nicgrefer/basesDatos-txt/blob/main/TABLAS_III.SQL)
+	
+	select * from alum;
+	select * from antiguos;
+	select * from nuevos;
+
+	-- Conjuntos
+
+ 
