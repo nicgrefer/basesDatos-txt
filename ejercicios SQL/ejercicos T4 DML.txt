@@ -31,3 +31,74 @@ select nombre_alumno, nota1 from notas_alumnos
 	where nota1=7
     and (nota1 + nota2 + nota3)>3/6;
 
+
+-- !3
+
+-- Obtener los ejemplares de los libros cuyo tema sea 'LABORES'. Usa el operador'=' y el operador LIKE. Compara los resultados
+
+select * from libreria;
+
+select * from libreria
+where tema = 'LABORES';
+
+SELECT * FROM libreria
+WHERE tema LIKE '%LABORES%';
+
+-- Visualiza el tema, estante y ejemplares de los libros con un número de ejemplares comprendidos entre 8 y 15
+
+select * from libreria
+where (ejemplares>8 and ejemplares<15)
+order by 3;
+
+
+-- Visualiza el tema, estante y ejemplares de los libros cuyo estante no esté comprendido entre la "B" y la "D".
+
+select * from libreria
+where estante not in ('B','C','D')
+order by 2;
+
+-- Visualiza los temas cuyo número de ejemplares no esté entre 15 y 20, ambos incluidos
+
+select tema,ejemplares from libreria
+where ejemplares not in (15,16,17,18,19,20)
+order by 2;
+
+-- !4
+
+-- Visualiza todas las asignaturas que contengan tres letras "o" en su interior y tengan alumnos matriculados de "Madrid"
+
+select asignaturas.cod, asignaturas.nombre, alumnos.APENOM, alumnos.POBLA
+from asignaturas, notas, alumnos
+where asignaturas.nombre like '%o%o%o%'
+    and (asignaturas.cod = notas.cod and notas.dni = alumnos.dni and POBLA = 'Madrid' );
+
+-- Visualiza los nombres de alumnos de "Madrid" que tengan alguna asignatura suspendida
+
+select asignaturas.cod, asignaturas.nombre, notas.nota ,alumnos.APENOM, alumnos.POBLA
+from asignaturas, notas, alumnos
+where notas.nota <= 4
+    and (asignaturas.cod = notas.cod and notas.dni = alumnos.dni and POBLA = 'Madrid' );
+
+
+-- Obtén el nombre y apellido de los alumnos que tengan nota en la asignatura con código 1.
+
+select asignaturas.cod, notas.nota , 
+  SUBSTR(alumnos.APENOM, 1, INSTR(alumnos.APENOM, ',') - 1) 'Apellido',
+  SUBSTR(alumnos.APENOM, INSTR(alumnos.APENOM, ',') + 2) 'Nombre'
+from asignaturas, notas, alumnos
+where notas.cod = 1
+    and (asignaturas.cod = notas.cod and notas.dni = alumnos.dni);
+
+-- Visualiza los nombres de alumnos que tengan una nota entre 7 y 8 en la asignatura de "FOL".
+
+select SUBSTR(alumnos.APENOM, INSTR(alumnos.APENOM, ',') + 2) "Nombre", notas.nota, asignaturas.NOMBRE
+from alumnos,notas,asignaturas
+where asignaturas.NOMBRE = 'FOL'
+	and notas.nota between 7 and 8 
+    and asignaturas.cod = notas.cod
+    and notas.dni = alumnos.dni;
+
+
+
+
+
