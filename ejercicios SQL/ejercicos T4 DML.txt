@@ -1,0 +1,33 @@
+-- !1
+
+-- Obtén todos los datos de los alumnos.
+select * from alum2425;
+--select * from alumnos;
+
+-- Obtén los siguientes datos de alumnos: DNI, NOMBRE, APELLIDOS, CURSO, NIVEL y CLASE.
+select dni, nombre, apellidos,curso,nivel,clase from alum2425;
+
+-- Obtén todos los datos de alumnos cuya población sea 'GUADALAJARA'.
+select * from alum2425 
+	where poblacion= 'GUADALAJARA';
+
+-- Obtén el NOMBRE y APELLIDOS de todos los alumnos cuya población sea 'GUADALAJARA'
+select nombre, apellidos from alum2425
+	where poblacion= 'GUADALAJARA';
+
+-- Consulta el DNI, NOMBRE, APELLIDOS, CURSO, NIVEL y CLASE de todos los alumnos ordenado por APELLIDOS y NOMBRE ascendentemente.
+
+select dni, nombre, apellidos, curso,nivel, clase from alum2425
+order by 3,2 asc;
+
+
+-- !2
+
+select * from notas_alumnos;
+
+-- Obtener aquellos nombres de alumnos que tengan un 7 en NOTA1 y cuya media sea mayor que 6.
+
+select nombre_alumno, nota1 from notas_alumnos
+	where nota1=7
+    and (nota1 + nota2 + nota3)>3/6;
+
