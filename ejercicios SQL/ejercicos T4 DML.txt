@@ -101,6 +101,40 @@ where asignaturas.NOMBRE = 'FOL'
     and notas.dni = alumnos.dni;
 
 
+---------------------------------------------------------------------------
+
+-- Cara2
+
+-- !2
+
+select * from EMPLE;
+select round (avg (salario), 2) "Media de salario" from emple;
+
+select count (COMISION) "nº comisiones no nulas" from emple;
+
+select max(salario) "Salario maximo", min (salario) "Salario minimo" 
+from emple
+	where dept_no = 30;
+
+-- !3
+
+SELECT RPAD(REPLACE(titulo, '"', ''), 43, '.') 
+FROM MISTEXTOS;
+
+-- !4
+
+SELECT LOWER(REPLACE(REPLACE(titulo, '"', ''), '.', '')) 
+FROM MISTEXTOS;
+
+-- !5
+
+select autor "Autor",SUBSTR (autor,1, instr(autor,',') -1)"Apellido"
+from libros;
+
+-- !6
+
+select autor "Autor", SUBSTR (autor,instr(autor,',') +1 )"Nombre"
+from libros;
 
 
 
