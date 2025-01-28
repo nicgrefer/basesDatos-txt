@@ -140,7 +140,7 @@ Se puede colocar las palabras ASC o DESC, que significan ascendente o descendent
 |ABS()|Valor absoluto|
 |ROUND(numero [,m])|Devuelve el valor de ‘numero’ redondeado a ‘m’ decimales|
 |AVG(n) |Calcula el valor medio de ‘n’ ignorando los valores nulos|
-|COUNT(* | expresión)| Cuenta el número de veces que la expresión evalúa algún dato con valor no nulo. La opción * cuenta todas las filas seleccionadas|
+|COUNT(* / expresión)| Cuenta el número de veces que la expresión evalúa algún dato con valor no nulo. La opción * cuenta todas las filas seleccionadas|
 |CONCAT (cad1, cad2)| Devuelve 'cad1' concatenada con 'cad2'. Es equivalente al operador barra barra (recta) |
 |LPAD `o` RPAD (cad1, n [, cad2]) | Para añadir a la izuierda (lpad) o derecha (rpad)  de 'cad1' hasta que alcance una cierta longitud 'n' siendo `cad2` lo que quieres que represente esos espacios|
 |LTRIM `o` RTRIM (cad [, set])| Suprime un conjunto de caracteres a la izquierda o derecha de la cadena 'cad'; 'set' es el conjunto de caracteres a suprimir |
