@@ -29,7 +29,7 @@ select * from notas_alumnos;
 
 select nombre_alumno, nota1 from notas_alumnos
 	where nota1=7
-    and (nota1 + nota2 + nota3)>3/6;
+    and (nota1 + nota2 + nota3)/3 >6;
 
 
 -- !3
@@ -67,10 +67,12 @@ order by 2;
 
 -- Visualiza todas las asignaturas que contengan tres letras "o" en su interior y tengan alumnos matriculados de "Madrid"
 
-select asignaturas.cod, asignaturas.nombre, alumnos.APENOM, alumnos.POBLA
+select asignaturas.cod, asignaturas.nombre "Asignatura" , alumnos.APENOM, alumnos.POBLA
 from asignaturas, notas, alumnos
-where asignaturas.nombre like '%o%o%o%'
-    and (asignaturas.cod = notas.cod and notas.dni = alumnos.dni and POBLA = 'Madrid' );
+where asignaturas.cod = notas.cod and notas.dni = alumnos.dni
+     and asignaturas.nombre like '%o%o%o%'
+    and POBLA = 'Madrid';
+
 
 -- Visualiza los nombres de alumnos de "Madrid" que tengan alguna asignatura suspendida
 
