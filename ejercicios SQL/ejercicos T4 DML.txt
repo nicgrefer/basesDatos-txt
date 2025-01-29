@@ -83,7 +83,7 @@ where notas.dni = alumnos.dni
     and asignaturas.cod = notas.cod 
     and POBLA = 'Madrid' ;
 
-
+>[!NOTE] >falla
 
 -- Obtén el nombre y apellido de los alumnos que tengan nota en la asignatura con código 1.
 
