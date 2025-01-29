@@ -139,5 +139,24 @@ from libros;
 select autor "Autor", SUBSTR (autor,instr(autor,',') +1 )"Nombre"
 from libros;
 
+--------------------------------------------------------------------------
+
+Hoja 4:
+
+-- 1.1
+
+select emple.apellido, count (emple.dept_no)
+from emple
+group by emple.apellido
+having count (emple.dept_no)>4;
+
+-- 1.2
+
+SELECT depart.dnombre, depart.dept_no, COUNT(emple.apellido) "employee_count"
+FROM depart, emple
+where depart.dept_no = emple.dept_no
+group by depart.dnombre, depart.dept_no
+having COUNT(emple.apellido) = max (COUNT(emple.apellido));
+
 
 
