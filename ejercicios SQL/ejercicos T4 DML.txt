@@ -78,8 +78,11 @@ where asignaturas.cod = notas.cod and notas.dni = alumnos.dni
 
 select asignaturas.cod, asignaturas.nombre, notas.nota ,alumnos.APENOM, alumnos.POBLA
 from asignaturas, notas, alumnos
-where notas.nota <= 4
-    and (asignaturas.cod = notas.cod and notas.dni = alumnos.dni and POBLA = 'Madrid' );
+where notas.dni = alumnos.dni
+    and notas.nota < 5
+    and asignaturas.cod = notas.cod 
+    and POBLA = 'Madrid' ;
+
 
 
 -- Obtén el nombre y apellido de los alumnos que tengan nota en la asignatura con código 1.
