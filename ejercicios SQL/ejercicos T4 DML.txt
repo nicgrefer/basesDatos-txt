@@ -152,11 +152,80 @@ having count (emple.dept_no)>4;
 
 -- 1.2
 
-SELECT depart.dnombre, depart.dept_no, COUNT(emple.apellido) "employee_count"
-FROM depart, emple
-where depart.dept_no = emple.dept_no
-group by depart.dnombre, depart.dept_no
-having COUNT(emple.apellido) = max (COUNT(emple.apellido));
+select depart.dept_no, depart.dnombre,count (emple.emp_no) "Nº de empleados"
+from depart, emple
+    where depart.dept_no=emple.dept_no
+group by depart.dept_no, depart.dnombre
+HAVING COUNT(emple.emp_no) >= ALL (
+    SELECT COUNT(emple.emp_no)
+    FROM emple
+    GROUP BY emple.dept_no);
 
+
+-- 1.4
+
+select emple.apellido 
+from emple
+	where emple.salario = (
+    	select avg(e2.salario)
+    	from emple e2
+    	where e2.dept_no=emple.dept_no
+    ); 
+
+
+-- 1.5 
+
+select count (emple.APELLIDO) "nº empleados", depart.DNOMBRE
+from emple, depart 
+	where emple.DEPT_NO=depart.DEPT_NO
+	and OFICIO = 'EMPLEADO' 
+group by  depart.DNOMBRE 
+order by 1;
+
+-- 1.6 No funciona
+
+select count (emple.APELLIDO) "nº empleados", depart.DEPT_NO
+from emple, depart 
+	where emple.DEPT_NO=depart.DEPT_NO
+	and OFICIO = 'EMPLEADO' 
+group by  depart.DEPT_NO 
+    HAVING COUNT(emple.APELLIDO) = (	
+    	select MAX( COUNT(emple.APELLIDO) )
+    	FROM (
+            SELECT count(emple.APELLIDO)
+            FROM emple
+            WHERE emple.OFICIO = 'EMPLEADO' 
+            GROUP BY depart.DEPT_NO 
+    	)
+	)
+order by 1;
+ 
+-- 1.7 No funciona
+
+select depart.dept_no, depart.dnombre,count(emple.apellido) "nº empleados"
+from emple, depart 
+	where emple.DEPT_NO=depart.DEPT_NO
+	and OFICIO = 'EMPLEADO' 
+group by  depart.dept_no, depart.dnombre
+    having count (emple.apellido)=(
+    	select max (count (emple.apellido))
+    	from( 
+    		select count(emple.apellido)
+    		from emple
+    		where OFICIO = 'EMPLEADO' 
+    		group by dept_no
+    	)
+    )
+;
+
+-- 1.8
+
+select depart.dnombre,emple.oficio, count (*) "nº trabajadores"
+from depart,emple
+	where depart.dept_no=emple.dept_no
+group by  depart.dnombre,emple.oficio
+    having count(*)>2
+order by 3;
+    
 
 
