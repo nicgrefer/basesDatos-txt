@@ -152,17 +152,24 @@ having count (emple.dept_no)>4;
 
 -- 1.2
 
-select depart.dept_no, depart.dnombre,count (emple.emp_no) "Nº de empleados"
-from depart, emple
-    where depart.dept_no=emple.dept_no
+select depart.dept_no, depart.dnombre, count(*) "Nº de empleados" from depart,emple
+where depart.dept_no=emple.dept_no
 group by depart.dept_no, depart.dnombre
-HAVING COUNT(emple.emp_no) >= ALL (
-    SELECT COUNT(emple.emp_no)
-    FROM emple
-    GROUP BY emple.dept_no);
+having count(*) = (select max(count(*)) 
+    from depart,emple 
+    where depart.dept_no=emple.dept_no
+    group by depart.dept_no, depart.dnombre)
+
+-- 1.3
+
+select emple.oficio, depart.dnombre, sum(emple.salario) "Suma de salarios" from depart, emple
+where depart.dept_no = emple.dept_no  
+group by emple.oficio, depart.dnombre
+    having depart.dnombre = 'VENTAS';
 
 
--- 1.4
+
+-- 1.4 NO HACER
 
 select emple.apellido 
 from emple
@@ -175,48 +182,36 @@ from emple
 
 -- 1.5 
 
-select count (emple.APELLIDO) "nº empleados", depart.DNOMBRE
-from emple, depart 
-	where emple.DEPT_NO=depart.DEPT_NO
-	and OFICIO = 'EMPLEADO' 
-group by  depart.DNOMBRE 
-order by 1;
 
--- 1.6 No funciona
+select depart.dnombre, emple.oficio, count(*)"Nº empleados" from depart, emple
+where depart.dept_no = emple.dept_no  
+group by depart.dnombre, emple.oficio
+having emple.oficio = 'EMPLEADO'
 
-select count (emple.APELLIDO) "nº empleados", depart.DEPT_NO
-from emple, depart 
-	where emple.DEPT_NO=depart.DEPT_NO
-	and OFICIO = 'EMPLEADO' 
-group by  depart.DEPT_NO 
-    HAVING COUNT(emple.APELLIDO) = (	
-    	select MAX( COUNT(emple.APELLIDO) )
-    	FROM (
-            SELECT count(emple.APELLIDO)
-            FROM emple
-            WHERE emple.OFICIO = 'EMPLEADO' 
-            GROUP BY depart.DEPT_NO 
-    	)
-	)
-order by 1;
- 
--- 1.7 No funciona
+--1.6. Desde de la tabla EMPLE, visualiza el departamento que tenga más empleados cuyo oficio sea 'EMPLEADO'
 
-select depart.dept_no, depart.dnombre,count(emple.apellido) "nº empleados"
-from emple, depart 
-	where emple.DEPT_NO=depart.DEPT_NO
-	and OFICIO = 'EMPLEADO' 
-group by  depart.dept_no, depart.dnombre
-    having count (emple.apellido)=(
-    	select max (count (emple.apellido))
-    	from( 
-    		select count(emple.apellido)
-    		from emple
-    		where OFICIO = 'EMPLEADO' 
-    		group by dept_no
-    	)
-    )
-;
+select depart.dnombre, emple.oficio,count(*) "Nº de empleados" from depart, emple
+where depart.dept_no = emple.dept_no  
+and emple.oficio = 'EMPLEADO'
+group by depart.dnombre,emple.oficio
+having count(*) = (select max(count(*)) from depart, emple
+    where depart.dept_no = emple.dept_no  
+    and emple.oficio = 'EMPLEADO'
+group by depart.dnombre,emple.oficio)
+
+--1.7. A partir de las tablas EMPLE y DEPART, visualiza el numero de departamento y el nombre de departamento que tenga más empleados cuyo oficio sea 'EMPLEADO'.
+
+select depart.dept_no, depart.dnombre, count(*) "Nº de empleados"
+from depart, emple
+where depart.dept_no = emple.dept_no
+and emple.oficio = 'EMPLEADO'
+group by depart.dept_no, depart.dnombre
+having count(*) = ( select max(count(*))
+        from  depart, emple
+        where depart.dept_no = emple.dept_no
+        and emple.oficio = 'EMPLEADO'
+        group by depart.dept_no)
+
 
 -- 1.8
 
