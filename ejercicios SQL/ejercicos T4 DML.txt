@@ -223,4 +223,55 @@ group by  depart.dnombre,emple.oficio
 order by 3;
     
 
+-- 2.1
+
+select alum.nombre
+from alum, antiguos, nuevos
+where alum.nombre = antiguos.nombre
+and alum.nombre = nuevos.nombre;
+
+
+-- 2.3
+
+select alum.nombre
+from alum, antiguos, nuevos
+where alum.nombre != antiguos.nombre
+and alum.nombre != nuevos.nombre;
+
+
+--3.1
+
+select CENTROS.cod_centro, count (*) "Nº profes"
+from CENTROS,PROFESORES
+where CENTROS.cod_centro = PROFESORES.cod_centro 
+group by CENTROS.cod_centro
+order by 1;
+
+select PROFESORES.especialidad, count (*) "Nº profes"
+from PROFESORES
+group by PROFESORES.especialidad
+order by 1;
+
+--3.2
+
+select centros.cod_centro, count (personal.dni)
+from centros
+left join personal on centros.cod_centro = personal.cod_centro
+group by  centros.cod_centro;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
