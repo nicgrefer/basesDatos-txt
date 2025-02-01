@@ -5,7 +5,7 @@
 - [x] Funciones
 - [x] Join
 - [x] Group by
-- [x] OUTER JOIN
+- [x] OUTER JOIN (Los 2 modelos)
 - [ ] UNION, INTERSECT, MINUS
 
 
@@ -185,10 +185,15 @@ Filtro que se hace sobre el `grup by` mostrando así solo lo que la codicion de 
 
 En este caso solo muestra los vendedores con un `total_venta` > 500
 
+# Operadores Relacionales/ Operadores de Conjuntos
 
-# OUTER JOIN
+Consiste en agrupar el resultado de varias `select` para conseguir un unico resultado
 
-Esta *funcion* se pone en el `WHERE` y consiste en representar tambien los datos que no tengan como tal una corespondencia entre tablas apareciendo **`NULL`**.
+## OUTER JOIN
+
+### Estructora Antigua (uso del simbolo '+')
+
+Esta *funcion* se pone en el `WHERE` y consiste en representar tambien los datos que no tengan como tal una corespondencia entre tablas apareciendo **`NULL`**.<br>
 Para hacer esto en **ORACLE SQL** se emplea el signo `+` como se ve en la siguiente estructura/ejemplo:
 
      SELECT tabla1.columa1, tabla1.columa2, tabla2.columa1,
@@ -211,6 +216,100 @@ De esta manera se obtendra filas con las columnas de tabla1 y el resto de column
 
 >[!IMPORTANT]
 > 
+
+### Estructura Nueva (uso del join)
+
+En **Oracle**, aunque todavía se puede usar la sintaxis antigua con el operador `(+)`, es recomendable utilizar la **sintaxis moderna de SQL estándar**, que también es totalmente compatible. Aquí te explico cómo hacerlo.
+
+
+
+#### ✅ **1. LEFT OUTER JOIN** (o simplemente **LEFT JOIN**)  
+Devuelve **todas las filas** de la tabla de la izquierda y las coincidencias de la tabla de la derecha. Si no hay coincidencias, las columnas de la tabla de la derecha se rellenan con `NULL`.
+
+```sql
+SELECT tabla1.columna1, tabla1.columna2, tabla2.columna1
+FROM tabla1
+LEFT OUTER JOIN tabla2 ON tabla1.columna1 = tabla2.columna1;
+```
+
+🔑 **Puntos Clave:**
+- `tabla1` es la tabla principal (se muestran todas sus filas).
+- `tabla2` aporta datos solo si hay coincidencias; si no, muestra `NULL`.
+
+---
+
+#### ✅ **2. RIGHT OUTER JOIN** (o simplemente **RIGHT JOIN**)  
+Devuelve **todas las filas** de la tabla de la derecha y las coincidencias de la tabla de la izquierda. Si no hay coincidencias, las columnas de la tabla de la izquierda se rellenan con `NULL`.
+
+```sql
+SELECT tabla1.columna1, tabla1.columna2, tabla2.columna1
+FROM tabla1
+RIGHT OUTER JOIN tabla2 ON tabla1.columna1 = tabla2.columna1;
+```
+
+🔑 **Puntos Clave:**
+- `tabla2` es la tabla principal (se muestran todas sus filas).
+- `tabla1` aporta datos si hay coincidencias; si no, muestra `NULL`.
+
+---
+
+#### ✅ **3. FULL OUTER JOIN** (o simplemente **FULL JOIN**)  
+Devuelve **todas las filas** de ambas tablas. Cuando no hay coincidencias, se rellena con `NULL` en las columnas de la tabla que falta.
+
+```sql
+SELECT tabla1.columna1, tabla1.columna2, tabla2.columna1
+FROM tabla1
+FULL OUTER JOIN tabla2 ON tabla1.columna1 = tabla2.columna1;
+```
+
+🔑 **Puntos Clave:**
+- Incluye **todas las filas** de `tabla1` y `tabla2`.
+- Si una fila no tiene coincidencia en la otra tabla, sus columnas aparecen como `NULL`.
+
+---
+
+### 📝 **Ejemplo en Oracle**
+
+### Tablas:
+**Clientes**
+| id_cliente | nombre   |
+|------------|----------|
+| 1          | Ana      |
+| 2          | Juan     |
+| 3          | Carlos   |
+
+**Pedidos**
+| id_pedido | id_cliente | producto  |
+|-----------|------------|-----------|
+| 101       | 1          | Laptop    |
+| 102       | 2          | Móvil     |
+
+#### 🔍 **LEFT JOIN en Oracle:**
+```sql
+SELECT c.id_cliente, c.nombre, p.producto
+FROM clientes c
+LEFT OUTER JOIN pedidos p ON c.id_cliente = p.id_cliente;
+```
+
+#### Resultado:
+| id_cliente | nombre   | producto  |
+|------------|----------|-----------|
+| 1          | Ana      | Laptop    |
+| 2          | Juan     | Móvil     |
+| 3          | Carlos   | NULL      |
+
+- **Carlos** aparece aunque no tenga pedidos, porque usamos `LEFT OUTER JOIN`.
+
+
+## UNION, INTERSECT, MINUS
+
+### Estructura:
+
+El formato de SELECT con estos operadores es el siguiente:
+
+	 SELECT … FROM … WHERE …
+	 Operador de conjuntos
+	 SELECT … FROM … WHERE 
 
 
 
