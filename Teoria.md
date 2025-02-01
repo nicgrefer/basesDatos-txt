@@ -1,141 +1,153 @@
 >[!NOTE]
->Todabia no esta completo 
+> ⚠️ *Todavía no está completo*
 
-- [x] Estructura base 
-- [x] Funciones
-- [x] Join
-- [x] Group by
-- [x] OUTER JOIN (Los 2 modelos)
-- [ ] UNION, INTERSECT, MINUS
+- [x] 📂 Estructura base
+- [x] 🔢 Funciones
+- [x] 🔗 Join
+- [x] 📊 Group by
+- [x] 🔄 OUTER JOIN (Los 2 modelos)
+- [ ] ➕ UNION, ➖ INTERSECT, ➗ MINUS
 
+# 📂 Estructura base
 
-# Estructura base
-## Select
+## 🔢 Select
 
-Para recuperar información o, lo que es lo mismo, realizar consultas a la base de datos
+Para recuperar información o, lo que es lo mismo, realizar consultas a la base de datos.
 
-    select objetox, objetoy....(o) *
+```sql
+SELECT objetox, objetoy....(o) *
+```
 
-Esto selecciona un objeto/elemento que selecciones o con el "*" para seleccionar todas las columnas
+Esto selecciona un objeto/elemento que especifiques o usa `*` para seleccionar todas las columnas.
 
-## From
+## 📚 From
 
-- Para especifica la tabla o tablas de las que se recuperarán los datos
+- Para especificar la tabla o tablas de las que se recuperan los datos:
 
-      SELECT nom_alumno, nota 
-      FROM Alumnos
+```sql
+SELECT nom_alumno, nota
+FROM Alumnos;
+```
 
-- También se le puede dar un alias a cada tabla 
+- Se puede dar un alias a cada tabla:
 
-  
-       SELECT A.nom_alumno, A.nota
-       FROM Alumnos A
+```sql
+SELECT A.nom_alumno, A.nota
+FROM Alumnos A;
+```
 
-### Alias de columnas
+### 👤 Alias de columnas
 
-Dentro de los from se puede dar un alias o otro nombre para la mejor comprensión a la hora de representar la tabla
+Permite dar un nombre alternativo para mejorar la comprensión:
 
-    SELECT nom_dpto “Departamento”, num_dpto “Nº departamento”
-    FROM Departamentos;
+```sql
+SELECT nom_dpto AS "Departamento", num_dpto AS "Nº departamento"
+FROM Departamentos;
+```
 
-### Concadenar textos
+### 📝 Concatenar textos
 
-Todas las bases de datos incluyen algún operador para encadenar textos. 
-En Oracle son los signos ||. 
-Ejemplo: 
+En Oracle, se usa `||` para concatenar textos:
 
-     SELECT tipo, modelo, tipo || '-' || modelo "Clave pieza" FROM Piezas;
+```sql
+SELECT tipo, modelo, tipo || '-' || modelo AS "Clave pieza" FROM Piezas;
+```
 
-## Where 
+## 🚧 Where
 
-Es una condición que se debe cumplir para que la consulta se realice correctamente
+Condición que debe cumplirse para que la consulta devuelva resultados:
 
-     WHERE nota=5;
-     WHERE (nota>=10) AND (curso=1);
-     WHERE (nota IS NULL) OR (UPPER(nom_alumno)=‘PEDRO’)
+```sql
+WHERE nota = 5;
+WHERE (nota >= 10) AND (curso = 1);
+WHERE (nota IS NULL) OR (UPPER(nom_alumno) = 'PEDRO');
+```
 
-Las funciones que se pueden utilizar son:
+### 🔄 Operadores de comparación
 
-|Funciones|
-|---|
-|=,>,<,>=,<=,!=,<>|
-| IN, NOT IN, BETWEEN, NOT BETWEEN|
-|Like|
+| Operador | Significado       |
+|----------|-------------------|
+| >        | Mayor que         |
+| <        | Menor que         |
+| >=       | Mayor o igual     |
+| <=       | Menor o igual     |
+| =        | Igual             |
+| <> / !=  | Distinto          |
 
-### Operadores de comparacion
+Ejemplo:
 
-|operador|Significado|
-|--------|-----------|
-|>|Mayor que|
-|<|Menor que|
-|>=|Mayor o igual|
-|<=|Menor o igual|
-|=|Igual|
-|<>|Distinto|
-|!=|Distinto|
+```sql
+SELECT nom_alumno FROM Alumnos WHERE (nota1 + nota2 + nota3) / 3 > 6;
+```
 
-ej:
+### 🔠 Operadores lógicos
 
-    SELECT nom_alumno FROM Alumnos WHERE (nota1+nota2+nota3)/3 >6;
+| Operador | Significado                                |
+|----------|-------------------------------------------|
+| AND      | Verdadero si ambas condiciones son ciertas|
+| OR       | Verdadero si al menos una condición es cierta|
+| NOT      | Invierte el resultado de la condición     |
 
-### Operadores logicos
+Ejemplo:
 
-|operador|Significado|
-|--------|-----------|
-|AND| Devuelve TRUE si las dos condiciones son verdaderas|
-|OR| Devuelve TRUE cuando una de las dos condiciones es verdadera|
-|NOT|Invierte la lógica de la condición. Si era verdadera pasa a ser falsa, y viceversa|
+```sql
+SELECT apellido, salario, num_dpto
+FROM Empleados
+WHERE (salario > 2000) AND (num_dpto = 10 OR num_dpto = 20);
+```
 
-ej:
+### 🌐 Between
 
-     SELECT apellido, salario, num_dpto FROM Empleados 
-     WHERE (salario>2000) AND (num_dpto=10 OR num_dpto=20);
+Filtra datos dentro de un rango:
 
-### Between
- Permite obtener datos que se encuentren dentro de un rango. Su 
-formato es:
+```sql
+SELECT apellido, salario
+FROM Empleados
+WHERE salario BETWEEN 1500 AND 2000;
+```
 
-     <expresión> [NOT] BETWEEN valor_inicial AND valor_final
+### 🎾 IN
 
-ej:
+Verifica si un valor pertenece a una lista:
 
-     /* Obtiene los empleados con salario entre 1500 y 2000 euros */
-     SELECT apellido, salario FROM Empleados WHERE salario BETWEEN 1500 AND 2000
-     
-### IN
+```sql
+SELECT apellido
+FROM Empleados
+WHERE num_dpto IN (10, 30);
+```
 
-Permite comprobar si una expresión pertenece o no a una lista de valores
-ej:
+### 🔍 LIKE
 
-    /* Obtiene los empleados cuyo nº de departamento sea 10 ó 30 */
-     SELECT apellido FROM Empleados WHERE num_dpto IN (10,30);
+Compara cadenas con patrones:
 
-### LIKE
+| Operador | Significado                         |
+|----------|------------------------------------|
+| %        | Cualquier secuencia de caracteres  |
+| _        | Un solo carácter cualquiera         |
 
-Para comparar cadenas de caracteres que cumplan un patrón no nos sirve el operador  `"="`
+Ejemplo:
 
-|Operador|Significado|
-|--------|-----------|
-|%| Representa cualquier cadena de 0 ó más caractere|
-|_| Representa un carácter cualquiera|
+```sql
+SELECT nombre
+FROM Clientes
+WHERE nombre LIKE 'A%';
+```
 
-Su formato es: WHERE columna LIKE ‘caracteres_especiales’
+## 🗒️ Order by
 
-## Order by
+Ordena resultados por una o varias columnas:
 
-Con esta funcion se puede ordenar la tabla por el valor que se quiera, podiendo poner el nombre o el numero de la posición en la que se encuentra dicha caracteristica
+```sql
+SELECT nombre, anio_nacimiento, localidad
+FROM datos
+ORDER BY anio_nacimiento ASC; -- O DESC
+```
 
-    select datos.nombre, datos.anio_nacimiento, datos.localidad
-    from datos
-    order by anio_nacimiento /o/ order by 2
+# 🔄 Principales Funciones
 
-Se puede colocar las palabras ASC o DESC, que significan ascendente o descendente respectivamente(por defecto se toma ASC).
+Consulta todas las funciones [aquí](https://github.com/nicgrefer/basesDatos-txt/blob/main/Funciones%20ORACLE.pdf).
 
-
-# Principales Funciones 
-[Todas las funciones](https://github.com/nicgrefer/basesDatos-txt/blob/main/Funciones%20ORACLE.pdf)
-
-|Funcion|Descripcción|
+| 🌐 Funcion | 📚 Descripción                    |
 |--|--|
 |ABS()|Valor absoluto|
 |ROUND(numero [,m])|Devuelve el valor de ‘numero’ redondeado a ‘m’ decimales|
@@ -152,7 +164,7 @@ Se puede colocar las palabras ASC o DESC, que significan ascendente o descendent
 |TO_NUMBER (cadena [,‘formato’]) |Convierte ‘cadena’ de tipo NUMBER según el formato especificado|
 
 
-# Join 
+# 🔗 Join 
 
 Consiste simplemente en juntar datos en 1 consulta que probengan de distintas tablas, para ello se separa con un coma ej:
 
@@ -164,7 +176,7 @@ Consiste simplemente en juntar datos en 1 consulta que probengan de distintas ta
 
 Para que funcione es inportante hacer un *"VINCULO"* entre ellas para eso se usa `WHERE` --> mientras...  para ello tiene que haver alguna relacción entre las tablas.
 
-# Grup by
+# 📊 Grup by
 
 Consiste en *"Agrupar"* la consulta *encapsulandolo* en el `GRUP BY`. Esto que se suele poner es lo mismo que aparece en el select siendo estos:
 
@@ -189,9 +201,9 @@ En este caso solo muestra los vendedores con un `total_venta` > 500
 
 Consiste en agrupar el resultado de varias `select` para conseguir un unico resultado
 
-## OUTER JOIN
+## 🔄 OUTER JOIN
 
-### Estructora Antigua (uso del simbolo '+')
+### 🔄 Estructora Antigua (uso del simbolo '+')
 
 Esta *funcion* se pone en el `WHERE` y consiste en representar tambien los datos que no tengan como tal una corespondencia entre tablas apareciendo **`NULL`**.<br>
 Para hacer esto en **ORACLE SQL** se emplea el signo `+` como se ve en la siguiente estructura/ejemplo:
