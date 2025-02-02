@@ -241,8 +241,8 @@ Devuelve **todas las filas** de la tabla de la izquierda y las coincidencias de 
 
 ```sql
 SELECT tabla1.columna1, tabla1.columna2, tabla2.columna1
-FROM tabla1
-LEFT OUTER JOIN tabla2 ON tabla1.columna1 = tabla2.columna1;
+FROM tabla1 LEFT OUTER JOIN tabla2
+ON tabla1.columna1 = tabla2.columna1;
 ```
 
 🔑 **Puntos Clave:**
@@ -256,8 +256,8 @@ Devuelve **todas las filas** de la tabla de la derecha y las coincidencias de la
 
 ```sql
 SELECT tabla1.columna1, tabla1.columna2, tabla2.columna1
-FROM tabla1
-RIGHT OUTER JOIN tabla2 ON tabla1.columna1 = tabla2.columna1;
+FROM tabla1 RIGHT OUTER JOIN tabla2
+ON tabla1.columna1 = tabla2.columna1;
 ```
 
 🔑 **Puntos Clave:**
@@ -271,8 +271,8 @@ Devuelve **todas las filas** de ambas tablas. Cuando no hay coincidencias, se re
 
 ```sql
 SELECT tabla1.columna1, tabla1.columna2, tabla2.columna1
-FROM tabla1
-FULL OUTER JOIN tabla2 ON tabla1.columna1 = tabla2.columna1;
+FROM tabla1 FULL OUTER JOIN tabla2
+ON tabla1.columna1 = tabla2.columna1;
 ```
 
 🔑 **Puntos Clave:**
