@@ -41,7 +41,7 @@ FROM Alumnos A;
 Permite dar un nombre alternativo para mejorar la comprensión:
 
 ```sql
-SELECT nom_dpto AS "Departamento", num_dpto AS "Nº departamento"
+SELECT nom_dpto "Departamento", num_dpto "Nº departamento"
 FROM Departamentos;
 ```
 
