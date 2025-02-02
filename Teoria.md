@@ -166,12 +166,12 @@ Consulta todas las funciones [aquí](https://github.com/nicgrefer/basesDatos-txt
 
 # 🔗 Join 
 
-Consiste simplemente en juntar datos en 1 consulta que probengan de distintas tablas, para ello se separa con un coma ej:
+Consiste simplemente en juntar datos en 1 consulta que probengan de distintas tablas, para ello se separa con un coma en el `from` marcando así las 2 tablas ej:
 
 
-    SELECT columnas de las tablas que aparecen en la cláusula FROM
-     FROMtabla1, tabla2
-     WHEREtabla1.columna = tabla2.columna ;
+    SELECT columnas de las tablas que aparecen en la cláusula 
+    FROM tabla1, tabla2
+    WHEREtabla1.columna = tabla2.columna ;
 
 
 Para que funcione es inportante hacer un *"VINCULO"* entre ellas para eso se usa `WHERE` --> mientras...  para ello tiene que haver alguna relacción entre las tablas.
