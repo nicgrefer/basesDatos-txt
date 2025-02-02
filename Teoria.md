@@ -300,8 +300,8 @@ ON tabla1.columna1 = tabla2.columna1;
 #### 🔍 **LEFT JOIN en Oracle:**
 ```sql
 SELECT c.id_cliente, c.nombre, p.producto
-FROM clientes c
-LEFT OUTER JOIN pedidos p ON c.id_cliente = p.id_cliente;
+FROM clientes c LEFT OUTER JOIN pedidos p
+ON c.id_cliente = p.id_cliente;
 ```
 
 #### Resultado:
