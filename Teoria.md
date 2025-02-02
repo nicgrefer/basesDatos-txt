@@ -178,17 +178,17 @@ Para que funcione es inportante hacer un *"VINCULO"* entre ellas para eso se usa
 
 # 📊 Grup by
 
-Consiste en *"Agrupar"* la consulta *encapsulandolo* en el `GRUP BY`. Esto que se suele poner es lo mismo que aparece en el select siendo estos:
+Consiste en *"Agrupar"* la consulta *encapsulandolo* en el `GRUP BY`. Lo que se pone aquí es lo mismo que aparece en el `select` siendo estos:
 
 -  una constante
 -  una función de grupo (SUM, COUNT, AVG, ... )
 -  una columna expresada en el GROUP BY.
 
-De la misma manera que existe em merotdo de búsqueda y filtrado `WHERE` aquí tenemos la función **`HAVING`** 
+De la misma manera que existe em metodo de búsqueda y filtrado (`WHERE`) aquí tenemos la función **`HAVING`** 
 
 ## Having 
 
-Filtro que se hace sobre el `grup by` mostrando así solo lo que la codicion de como *"true"* ej:
+Filtro que se hace sobre el `grup by` mostrando así **solo** lo que la codicion de como *"true"* ej:
 
     SELECT vendedor, SUM(total_venta) AS total
     FROM ventas
@@ -205,38 +205,39 @@ Consiste en agrupar el resultado de varias `select` para conseguir un unico resu
 
 ### 🔄 Estructora Antigua (uso del simbolo '+')
 
-Esta *funcion* se pone en el `WHERE` y consiste en representar tambien los datos que no tengan como tal una corespondencia entre tablas apareciendo **`NULL`**.<br>
+Esta *funcion* se pone en el `WHERE` y consiste en representar tambien los datos que no tengan como tal una corespondencia entre tablas apareciendo como valor **`NULL`**.<br>
 Para hacer esto en **ORACLE SQL** se emplea el signo `+` como se ve en la siguiente estructura/ejemplo:
 
      SELECT tabla1.columa1, tabla1.columa2, tabla2.columa1,
      FROM tabla1, tabla2
      WHERE tablal.columa1 = tabla2. columna1 (+)
 
-De esta manera se obtendra filas con las columnas de tabla1 y el resto de columnas de la tabla2 se rellena con NULL
+De esta manera se obtendrán las filas con las columnas de *tabla1* y el resto de columnas de la *tabla2* se rellena con `NULL`
 
 
 >[!IMPORTANT]
 >Llegado a este momento es importante que sepas que se pede hacerse **SUB CONSULTAS** como las siguientes:
 >
->-- Muestra cuantos empleados han sido contratados en el mes de julio = 6
+>Queremos obtener el nombre y salario de los empleados que ganan más que el salario promedio de todos los empleados
 >
-	select to_char(employees.hire_date, 'mm') "Mes (¿junio?)", count (employees.employee_id) "nº empleados"
-	from hr.employees
-	group by to_char (employees.hire_date, 'mm')
-	    having to_char (employees.hire_date, 'mm') =6
-	order by 1;
+	SELECT FIRST_NAME, LAST_NAME, SALARY
+	FROM EMPLOYEES
+	WHERE SALARY > (
+	    SELECT AVG(SALARY)
+	    FROM EMPLOYEES
+	);
+
 
 >[!IMPORTANT]
-> 
+> De esta forma podemos hacer busquedas/consultas que amteriormente no podríamos realizar
 
 ### Estructura Nueva (uso del join)
 
-En **Oracle**, aunque todavía se puede usar la sintaxis antigua con el operador `(+)`, es recomendable utilizar la **sintaxis moderna de SQL estándar**, que también es totalmente compatible. Aquí te explico cómo hacerlo.
+En **Oracle**, aunque todavía se puede usar la sintaxis antigua con el operador `(+)`, es recomendable utilizar la **sintaxis moderna de SQL estándar**.
 
 
-
-#### ✅ **1. LEFT OUTER JOIN** (o simplemente **LEFT JOIN**)  
-Devuelve **todas las filas** de la tabla de la izquierda y las coincidencias de la tabla de la derecha. Si no hay coincidencias, las columnas de la tabla de la derecha se rellenan con `NULL`.
+#### ✅ **1. LEFT OUTER JOIN** (o **LEFT JOIN**)  
+Devuelve **todas las filas** de la tabla de la izquierda y las coincidencias de la tabla de la derecha. **Si no hay coincidencias**, las columnas de la tabla de la **derecha** se rellenan con `NULL`.
 
 ```sql
 SELECT tabla1.columna1, tabla1.columna2, tabla2.columna1
