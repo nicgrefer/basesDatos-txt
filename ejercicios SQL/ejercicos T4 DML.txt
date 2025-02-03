@@ -231,26 +231,30 @@ where alum.nombre = antiguos.nombre
 and alum.nombre = nuevos.nombre;
 
 
+o 
+
+select nombre from alum
+INTERSECT
+select nombre from nuevos
+INTERSECT
+select nombre from antiguos;
+
 -- 2.3
 
-select alum.nombre
-from alum, antiguos, nuevos
-where alum.nombre != antiguos.nombre
-and alum.nombre != nuevos.nombre;
+select nombre from alum
+MINUS
+select nombre from nuevos
+MINUS 
+select nombre from antiguos;
 
 
 --3.1
 
-select CENTROS.cod_centro, count (*) "Nº profes"
+select centros.nombre, CENTROS.cod_centro,PROFESORES.especialidad ,count (PROFESORES.especialidad) "Nº profes"
 from CENTROS,PROFESORES
-where CENTROS.cod_centro = PROFESORES.cod_centro 
-group by CENTROS.cod_centro
-order by 1;
-
-select PROFESORES.especialidad, count (*) "Nº profes"
-from PROFESORES
-group by PROFESORES.especialidad
-order by 1;
+where CENTROS.cod_centro = PROFESORES.cod_centro (+)
+group by CENTROS.cod_centro, PROFESORES.especialidad, centros.nombre
+order by 2;
 
 --3.2
 
@@ -260,6 +264,12 @@ left join personal on centros.cod_centro = personal.cod_centro
 group by  centros.cod_centro;
 
 
+	Ó
+select centros.nombre,centros.cod_centro, count (personal.cod_centro) "nº empleados"
+from centros, personal
+where centros.cod_centro = personal.cod_centro (+)
+group by  centros.nombre,centros.cod_centro
+order by 2;
 
 
 
