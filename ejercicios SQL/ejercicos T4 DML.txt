@@ -272,12 +272,59 @@ group by  centros.nombre,centros.cod_centro
 order by 2;
 
 
+-----------
+ 
+-- Hoja 5
+
+--4.1
+
+select bancos.nombre_banc "Nombre Banco", count(sucursales.cod_banco) "Nº Sucursales"
+from bancos, sucursales
+where sucursales.cod_banco = bancos.cod_banco
+group by bancos.nombre_banc
+having count (sucursales.cod_banco) = (
+
+    select max(count(sucursales.cod_banco))
+	from sucursales, bancos
+    where sucursales.cod_banco = bancos.cod_banco
+    group by bancos.nombre_banc
+);
+
+
+-- 4.2
+
+
+select bancos.nombre_banc "Nombre Banco", sum (CUENTAS.saldo_debe) "Saldo Debe", sum (CUENTAS.saldo_haber) "Saldo Haber"
+from bancos, cuentas
+where CUENTAS.DIREC_CTA = 'GUADALAJARA'
+group by bancos.nombre_banc;
 
 
 
+-- 4.3 CORREGIR
 
+select MOVIMIENTOS.NUM_CTA "Numero Cuenta", count (MOVIMIENTOS.NUM_CTA) "Nº Movimientos"
+from MOVIMIENTOS
+group by MOVIMIENTOS.NUM_CTA
+having count(MOVIMIENTOS.NUM_CTA)= (
 
-
+	max(count(MOVIMIENTOS.NUM_CTA))
+    from MOVIMIENTOS
+	group by MOVIMIENTOS.NUM_CTA
+    
+);
+-- by CHAT
+SELECT NUM_CTA "Numero Cuenta", "Nº Movimientos"
+FROM (
+    SELECT MOVIMIENTOS.NUM_CTA, COUNT(MOVIMIENTOS.NUM_CTA) AS "Nº Movimientos"
+    FROM MOVIMIENTOS
+    GROUP BY MOVIMIENTOS.NUM_CTA
+)
+WHERE "Nº Movimientos" = (
+    SELECT MAX(COUNT(MOVIMIENTOS.NUM_CTA))
+    FROM MOVIMIENTOS
+    GROUP BY MOVIMIENTOS.NUM_CTA
+);
 
 
 
