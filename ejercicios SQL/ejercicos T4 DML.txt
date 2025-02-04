@@ -295,37 +295,36 @@ having count (sucursales.cod_banco) = (
 
 
 select bancos.nombre_banc "Nombre Banco", sum (CUENTAS.saldo_debe) "Saldo Debe", sum (CUENTAS.saldo_haber) "Saldo Haber"
-from bancos, cuentas
-where CUENTAS.DIREC_CTA = 'GUADALAJARA'
+from bancos, cuentas, sucursales
+where bancos.cod_banco = cuentas.cod_banco
+and sucursales.cod_sucur =cuentas.cod_sucur
+and bancos.poblacion = 'GUADALAJARA'
 group by bancos.nombre_banc;
 
-
-
--- 4.3 CORREGIR
+-- 4.3 
 
 select MOVIMIENTOS.NUM_CTA "Numero Cuenta", count (MOVIMIENTOS.NUM_CTA) "Nº Movimientos"
 from MOVIMIENTOS
 group by MOVIMIENTOS.NUM_CTA
 having count(MOVIMIENTOS.NUM_CTA)= (
 
-	max(count(MOVIMIENTOS.NUM_CTA))
+	select max(count(MOVIMIENTOS.NUM_CTA))
     from MOVIMIENTOS
 	group by MOVIMIENTOS.NUM_CTA
     
 );
--- by CHAT
-SELECT NUM_CTA "Numero Cuenta", "Nº Movimientos"
-FROM (
-    SELECT MOVIMIENTOS.NUM_CTA, COUNT(MOVIMIENTOS.NUM_CTA) AS "Nº Movimientos"
-    FROM MOVIMIENTOS
-    GROUP BY MOVIMIENTOS.NUM_CTA
-)
-WHERE "Nº Movimientos" = (
-    SELECT MAX(COUNT(MOVIMIENTOS.NUM_CTA))
-    FROM MOVIMIENTOS
-    GROUP BY MOVIMIENTOS.NUM_CTA
-);
 
+
+--4.4. Obtén el nombre de la sucursal que haya tenido más suma de reintegros: Nombre sucursal, suma reintegros
+select sucursales.nombre_suc, sum(movimientos.importe) "Suma reintegros" from sucursales, movimientos
+where sucursales.cod_sucur = movimientos.cod_sucur
+    and movimientos.tipo_mov like '%R%'
+group by sucursales.nombre_suc
+    having sum(movimientos.importe) = (select max(sum(movimientos.importe)) 
+    from sucursales, movimientos
+    where sucursales.cod_sucur = movimientos.cod_sucur
+    and movimientos.tipo_mov like '%R%'
+    group by sucursales.nombre_suc);
 
 
 
