@@ -494,5 +494,53 @@ borrador
 	select * from nuevos;
 
 	-- Conjuntos
+----
+05/02/25
+# Subconsultas
 
+	-- Con HR
+	-- Mostrar los empleados que tienen el mismo oficio que 'Alexander Hunold.'
+	select * from hr.employees ;
+	-- 	a) obtener el puesto de Alexander
+	select  employees.job_id from hr.employees where employees.first_name= 'Alexander' and employees.last_name ='Hunold';
+	
+	-- b) seleccionar todos los epleados que sean 'IT_PROG'
+	select  employees.first_name,employees.last_name
+	from hr.employees 
+	where employees.job_id = 'IT_PROG';
+	-- c) Juntar las 2 consultas
+	select  employees.first_name,employees.last_name
+	from hr.employees 
+	where employees.job_id = (
+	    select  employees.job_id 
+	    from hr.employees
+	    where employees.first_name= 'Alexander' 
+	    and employees.last_name ='Hunold'
+	);
+
+---
+	-- Mostrar el empleado cuyo salario  sea mayor al salario medio
+	
+	-- a) Obtener el salario medio de todos los empleados
+	 select round( avg (employees.salary),2) from hr.employees;
+	
+	-- b) obtener los empleados con salario superior a 6467.44
+	 select * from hr.employees where employees.salary > 6467.44;
+	
+	-- c) Juntar las consultas
+	
+	 select * from hr.employees where employees.salary >(
+	     select  avg (employees.salary) from hr.employees
+	 );
+ ## Test en subconsultas 'in'
  
+	--  Mostrar los datos de los empleados que tienen un puesto = a alguno de los puestos de los empleados del departamento 20
+ 	SELECT * FROM hr.employees 
+	WHERE job_id IN (
+	    SELECT job_id FROM hr.employees  WHERE department_id = 20
+	);
+
+# Ejercicios 05/02
+-- Mostrar a los empeados que tengancomo manager a 'King' y 'Austin' y 'Pataballa'
+
+-- Mostrar los departamentos que tienen empleados trabajando
