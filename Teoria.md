@@ -324,6 +324,32 @@ El formato de SELECT con estos operadores es el siguiente:
 	 Operador de conjuntos
 	 SELECT … FROM … WHERE 
 
+# Subconsultas
+
+Se pueden poner tanto en el `where` o en el `habing`
+
+ej de idea para crear subconsultas:
+
+	-- Con HR
+	-- Mostrar los empleados que tienen el mismo oficio que 'Alexander Hunold.'
+	select * from hr.employees ;
+	-- 	a) obtener el puesto de Alexander
+	select  employees.job_id from hr.employees where employees.first_name= 'Alexander' and employees.last_name ='Hunold';
+	
+	-- b) seleccionar todos los epleados que sean 'IT_PROG'
+	select  employees.first_name,employees.last_name
+	from hr.employees 
+	where employees.job_id = 'IT_PROG';
+	-- c) Juntar las 2 consultas
+	select  employees.first_name,employees.last_name
+	from hr.employees 
+	where employees.job_id = (
+	    select  employees.job_id 
+	    from hr.employees
+	    where employees.first_name= 'Alexander' 
+	    and employees.last_name ='Hunold'
+	);
+
 
 
 
