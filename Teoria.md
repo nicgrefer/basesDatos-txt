@@ -350,8 +350,15 @@ ej de idea para crear subconsultas:
 	    and employees.last_name ='Hunold'
 	);
 
+# exists/ not exists
 
-
+	select * from hr.departments where exists (
+	    select * from hr.employees where employees.DEPARTMENT_ID =departments.DEPARTMENT_ID
+	);
+---
+	select * from hr.departments where not exists (
+	    select * from hr.employees where employees.DEPARTMENT_ID =departments.DEPARTMENT_ID
+	);
 
 
 
