@@ -558,8 +558,8 @@ select * from hr.departments;
 --mostrar los departamentos que tienen empleados trabajando
 
 	select * from hr.departments where departments.DEPARTMENT_ID in (
-	
-		select employees.DEPARTMENT_ID
+
+		select distinct  employees.DEPARTMENT_ID
 		from hr.employees
 	);
 
