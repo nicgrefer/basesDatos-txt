@@ -541,6 +541,26 @@ borrador
 	);
 
 # Ejercicios 05/02
--- Mostrar a los empeados que tengancomo manager a 'King' y 'Austin' y 'Pataballa'
+-- Muestra a los empleados que tengan como manager a 'King' 'Austin' y 'Pataballa' o del estilo
 
--- Mostrar los departamentos que tienen empleados trabajando
+select * from hr.employees;
+select * from hr.departments;
+
+	select * from hr.employees where employees.MANAGER_ID in (
+		select employees.MANAGER_ID
+		from hr.employees
+		where employees.LAST_NAME = 'King'
+		or employees.LAST_NAME = 'Austin'
+		or employees.LAST_NAME = 'Pataballa'
+	);
+
+
+--mostrar los departamentos que tienen empleados trabajando
+
+	select * from hr.departments where departments.DEPARTMENT_ID in (
+	
+		select employees.DEPARTMENT_ID
+		from hr.employees
+	);
+
+
