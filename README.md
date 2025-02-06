@@ -567,10 +567,11 @@ select * from hr.departments;
 -- Mostrar los empleados que han rotado por mas de un puesto de trabajo (resuelvela de todas las formas posibles)
 
 --Forma 1
-SELECT job_history.employee_id "Id empleado", employees.first_name "Nombre", COUNT(*) "n° rotaciones empleado"
-FROM  hr.job_history, hr.employees
-GROUP BY job_history.employee_id, employees.first_name
-HAVING COUNT(*) > 1;
+
+		SELECT job_history.employee_id "Id empleado", employees.first_name "Nombre", COUNT(*) "n° rotaciones empleado"
+		FROM  hr.job_history, hr.employees
+		GROUP BY job_history.employee_id, employees.first_name
+		HAVING COUNT(*) > 1;
 
 --Forma 2
 
