@@ -602,4 +602,11 @@ select * from hr.departments;
 
 -- Mostrar las localizaciones en las que no hay ningun departameneto
 
+	select locations.location_id,locations.city
+	from hr.locations
+	where locations.location_id not in(
+	    select DEPARTMENTS.location_id
+	    from  hr.DEPARTMENTS
+	    group by DEPARTMENTS.location_id
+	);
 
