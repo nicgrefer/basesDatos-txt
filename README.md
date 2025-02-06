@@ -566,14 +566,39 @@ select * from hr.departments;
 
 -- Mostrar los empleados que han rotado por mas de un puesto de trabajo (resuelvela de todas las formas posibles)
 
+-- Mostrar los empleados que han rotado por mas de un puesto de trabajo (resuelvela de todas las formas posibles)
+
 --Forma 1
 
-		SELECT job_history.employee_id "Id empleado", employees.first_name "Nombre", COUNT(*) "n° rotaciones empleado"
-		FROM  hr.job_history, hr.employees
-		GROUP BY job_history.employee_id, employees.first_name
-		HAVING COUNT(*) > 1;
+	SELECT job_history.employee_id "Id empleado", employees.first_name "Nombre", COUNT(*) "n° rotaciones empleado"
+	FROM hr.job_history
+	JOIN hr.employees ON job_history.employee_id = employees.employee_id
+	GROUP BY job_history.employee_id, employees.first_name
+	HAVING COUNT(*) > 1;
 
 --Forma 2
+
+	SELECT e.employee_id  "Id empleado", e.first_name  "Nombre", (
+	    SELECT COUNT(*) FROM hr.job_history jh WHERE jh.employee_id = e.employee_id)  "n° rotaciones empleado"
+	FROM hr.employees e
+	WHERE (
+	    SELECT COUNT(*)
+	    FROM hr.job_history jh 
+	    WHERE jh.employee_id = e.employee_id) > 1;
+
+--Forma 3
+
+	SELECT e.employee_id  "Id empleado", e.first_name  "Nombre",  COUNT(jh.employee_id)  "n° rotaciones empleado"
+	FROM hr.employees e
+	JOIN hr.job_history jh ON e.employee_id = jh.employee_id
+	WHERE e.employee_id IN (
+	    SELECT employee_id 
+	    FROM hr.job_history 
+	    GROUP BY employee_id 
+	    HAVING COUNT(*) > 1
+	)
+	GROUP BY e.employee_id, e.first_name;
+
 
 -- Mostrar las localizaciones en las que no hay ningun departameneto
 
