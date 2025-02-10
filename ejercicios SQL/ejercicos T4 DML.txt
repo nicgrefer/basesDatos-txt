@@ -327,7 +327,65 @@ group by sucursales.nombre_suc
     group by sucursales.nombre_suc);
 
 
+PAgina 6 SUbConsultas
 
+--1.1
+select count (*) "Nº apellidos que empieze por A" from EMPLE where APELLIDO in (
+  select APELLIDO from EMPLE where APELLIDO like 'A%'
+);
 
+-- 1.2
+select APELLIDO from EMPLE where APELLIDO  in (
+  select APELLIDO from EMPLE where APELLIDO like 'A%' 
+)
+and SALARIO = (
+    select max(SALARIO) from EMPLE where APELLIDO like 'A%' 
 
+);
 
+-- 1.3
+select APELLIDO,OFICIO,SALARIO,FECHA_ALT 
+from EMPLE
+where OFICIO = (
+    select OFICIO from EMPLE where apellido = 'JIMENEZ'
+)or SALARIO >= (
+    select SALARIO from EMPLE where apellido = 'FERNANDEZ'
+    );
+
+--1.4
+select APELLIDO,OFICIO 
+from EMPLE
+where oficio = (
+  select  oficio from EMPLE where APELLIDO = 'JIMENEZ'
+);
+
+--1.5
+select APELLIDO,SALARIO,DEPT_NO
+from EMPLE
+where SALARIO in (
+  select max(SALARIO) from EMPLE group by  DEPT_NO
+)order by 3;
+
+--1.6
+select e1.APELLIDO,e1.SALARIO,e1.DEPT_NO
+from EMPLE e1
+where SALARIO > (
+  select avg(e2.SALARIO) from EMPLE e2 where e1.DEPT_NO= e2.DEPT_No
+);
+
+--1.7
+select EMPLE.APELLIDO,EMPLE.OFICIO,EMPLE.SALARIO
+from EMPLE 
+where EMPLE.DEPT_NO =  (
+  select EMPLE.DEPT_NO from EMPLE where EMPLE.APELLIDO = 'FERNANDEZ'
+) and EMPLE.SALARIO = (
+    select SALARIO
+    from EMPLE
+    where EMPLE.APELLIDO = 'FERNANDEZ'
+);
+--1.8 
+select EMPLE.APELLIDO,EMPLE.OFICIO,DEPART.LOC
+from EMPLE,DEPART
+where DEPART.DEPT_NO in (
+    select EMPLE.DEPT_NO from EMPLE 
+)and EMPLE.OFICIO = 'ANALISTA';
