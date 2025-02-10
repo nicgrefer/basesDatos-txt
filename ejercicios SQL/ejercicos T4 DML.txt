@@ -326,7 +326,7 @@ group by sucursales.nombre_suc
     and movimientos.tipo_mov like '%R%'
     group by sucursales.nombre_suc);
 
-
+-------------------------------------------------------------------------------------------
 PAgina 6 SUbConsultas
 
 --1.1
@@ -383,9 +383,25 @@ where EMPLE.DEPT_NO =  (
     from EMPLE
     where EMPLE.APELLIDO = 'FERNANDEZ'
 );
---1.8 
+--1.8  
+(SIN SUBCONSULTA)
 select EMPLE.APELLIDO,EMPLE.OFICIO,DEPART.LOC
 from EMPLE,DEPART
-where DEPART.DEPT_NO in (
-    select EMPLE.DEPT_NO from EMPLE 
-)and EMPLE.OFICIO = 'ANALISTA';
+where DEPART.DEPT_NO = EMPLE.DEPT_NO
+and EMPLE.OFICIO = 'ANALISTA';
+(CON SUBCONSULTA)
+SELECT DEPART.LOC, DEPART.DEPT_NO
+FROM DEPART
+WHERE EXISTS (
+    SELECT * 
+    FROM EMPLE
+	WHERE EMPLE.OFICIO = 'ANALISTA'
+	AND EMPLE.DEPT_NO = DEPART.DEPT_NO
+);
+
+
+--1.9
+select * from EMPLE
+where DIR in (
+    select EMP_NO from EMPLE where APELLIDO = 'CEREZO'
+);
