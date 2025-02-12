@@ -428,30 +428,20 @@ select APELLIDO,SALARIO from EMPLE where SALARIO in (
 -- 2.1
 select ASIGNATURAS.NOMBRE
 from ASIGNATURAS
-where ASIGNATURAS.COD not in (
-    select NOTAS.COD
-    from NOTAS
-    where NOTAS.NOTA <5
+where not exists (
+    select * from NOTAS where NOTAS.NOTA <5 and NOTAS.COD=ASIGNATURAS.COD
 );
+
 
 -- 2.2
 select ASIGNATURAS.NOMBRE
 from ASIGNATURAS
-where ASIGNATURAS.COD not in (
-    select NOTAS.COD
-    from NOTAS
-    where NOTAS.DNI in (
-    	select ALUMNOS.DNI
-    	from ALUMNOS
-    )
+where not exists (
+    select * from NOTAS where notas.cod = asignaturas.cod
 );
 
 -- 2.3
-SELECT RTRIM(ALUMNOS.APENOM, ',')  "Apellido"
-FROM ALUMNOS
-WHERE ALUMNOS.DNI IN (
-    SELECT NOTAS.DNI
-    FROM NOTAS
-    WHERE NOTAS.NOTA IS NULL
-    AND NOTAS.COD = 1
-);
+SELECT * FROM ALUMNOS
+WHERE not exists (select * from notas where notas.cod = 1 and notas.dni = alumnos.dni);
+
+
