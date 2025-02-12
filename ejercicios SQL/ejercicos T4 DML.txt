@@ -444,4 +444,11 @@ where not exists (
 SELECT * FROM ALUMNOS
 WHERE not exists (select * from notas where notas.cod = 1 and notas.dni = alumnos.dni);
 
+-- 3.1
+select * from libreria 
+where ejemplares < (select ejemplares from libreria where tema = 'MEDICINA');
 
+-- 3.2
+select * from libreria
+where ejemplares = (select max(ejemplares) from libreria
+    				where tema like '%E%');
