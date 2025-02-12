@@ -405,3 +405,26 @@ select * from EMPLE
 where DIR in (
     select EMP_NO from EMPLE where APELLIDO = 'CEREZO'
 );
+
+-- 2.1
+select ASIGNATURAS.NOMBRE
+from ASIGNATURAS
+where ASIGNATURAS.COD not in (
+    select NOTAS.COD
+    from NOTAS
+    where NOTAS.NOTA <5
+);
+
+-- 2.2
+select ASIGNATURAS.NOMBRE
+from ASIGNATURAS
+where ASIGNATURAS.COD not in (
+    select NOTAS.COD
+    from NOTAS
+    where NOTAS.DNI in (
+    	select ALUMNOS.DNI
+    	from ALUMNOS
+    )
+);
+
+-- 2.3
