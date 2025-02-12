@@ -406,6 +406,25 @@ where DIR in (
     select EMP_NO from EMPLE where APELLIDO = 'CEREZO'
 );
 
+-1.10
+select * from EMPLE
+where DEPT_NO in (
+    select DEPT_NO from DEPART where DNOMBRE = 'VENTAS'
+);
+
+-- 1.11
+select * from depart
+where depart.DEPT_NO not in (select emple.DEPT_NO from emple where OFICIO = 'EMPLEADO');
+
+--1.12
+select * from depart
+where depart.DEPT_NO not in (select emple.DEPT_NO from emple where OFICIO = 'EMPLEADO');
+
+--1.13
+select APELLIDO,SALARIO from EMPLE where SALARIO in (
+  select max(SALARIO)from EMPLE where DEPT_NO = 20
+);
+
 -- 2.1
 select ASIGNATURAS.NOMBRE
 from ASIGNATURAS
@@ -428,3 +447,11 @@ where ASIGNATURAS.COD not in (
 );
 
 -- 2.3
+SELECT RTRIM(ALUMNOS.APENOM, ',')  "Apellido"
+FROM ALUMNOS
+WHERE ALUMNOS.DNI IN (
+    SELECT NOTAS.DNI
+    FROM NOTAS
+    WHERE NOTAS.NOTA IS NULL
+    AND NOTAS.COD = 1
+);
