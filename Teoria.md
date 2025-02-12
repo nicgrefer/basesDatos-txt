@@ -216,7 +216,7 @@ De esta manera se obtendrán las filas con las columnas de *tabla1* y el resto d
 
 
 >[!IMPORTANT]
->Llegado a este momento es importante que sepas que se pede hacerse **SUB CONSULTAS** como las siguientes:
+>Llegado a este momento es importante que sepas que se pede hacerse **[SUB CONSULTAS](https://github.com/nicgrefer/basesDatos-txt/blob/main/Teoria.md#subconsultas)** como las siguientes:
 >
 >Queremos obtener el nombre y salario de los empleados que ganan más que el salario promedio de todos los empleados
 >
@@ -324,9 +324,27 @@ El formato de SELECT con estos operadores es el siguiente:
 	 Operador de conjuntos
 	 SELECT … FROM … WHERE 
 
+### Función:
+
+Consiste en `unir`, `insertar`(es decir que sean datos iguales (como en el siguiente ejemplo)) o `restar` la informacion que puede haver entre las distintas tablas como en el siguiente ejemplo:
+
+````SQL
+-- Muestra a los alumos que esten estudiando actualmente y que ya ayan sido alumnos anteriormente y esten matriculados para el año siguiente
+select nombre from alum
+INTERSECT
+select nombre from nuevos
+INTERSECT
+select nombre from antiguos;
+````
+  
+
 # Subconsultas
 
 Se pueden poner tanto en el `where` o en el `habing`
+
+Su funcion es pocer hacer consultas dentro de consultas y conseguir *excepciones* que de otras formas serian imposibles
+
+## Estructura
 
 ej de idea para crear subconsultas:
 
@@ -349,16 +367,34 @@ ej de idea para crear subconsultas:
 	    where employees.first_name= 'Alexander' 
 	    and employees.last_name ='Hunold'
 	);
+ En este caso usamos el operadir `=` aunque hay mas operadores (aparte de los ya [comocidos](https://github.com/nicgrefer/basesDatos-txt/blob/main/Teoria.md#-operadores-de-comparaci%C3%B3n) ) como el `in`/`not in ` o `exists`/`not exists`
 
-# exists/ not exists
+### In/Not In
+Se suele usar cuando la *subconsulta* pueda proporcionar barios valores pero solo nos necesite 
 
-	select * from hr.departments where exists (
-	    select * from hr.employees where employees.DEPARTMENT_ID =departments.DEPARTMENT_ID
+```SQL
+--  Mostrar los datos de los empleados que tienen un puesto = a alguno de los puestos de los empleados del departamento 20
+SELECT * FROM hr.employees 
+WHERE job_id IN (
+    SELECT job_id FROM hr.employees  WHERE department_id = 20
+);
+````
+mas ejemplos a partir de [aquí](https://github.com/nicgrefer/basesDatos-txt/tree/main#test-en-subconsultas-in)
+
+>[!TIP]
+>Si pones un `=` al compilar te pone: **la subconsulta de una sola fila devuelve más de una fila**. Entonces tienes que cambiarlo a `in`
+
+### Exists/ Not Exists
+Para comprobar si la consulta principal **`contiene`** algun valor. Por lo tanto en este tipo de consultas suele dar un poco igual de que datos hagas el `select` en la cubconsulta ya que aquí lo importante se encuentra en el `where`
+
+```SQL
+select * from hr.departments where exists (
+	select * from hr.employees where employees.DEPARTMENT_ID =departments.DEPARTMENT_ID
 	);
----
-	select * from hr.departments where not exists (
-	    select * from hr.employees where employees.DEPARTMENT_ID =departments.DEPARTMENT_ID
+-------------------------------------------------------------------------------------------------
+select * from hr.departments where not exists (
+	select * from hr.employees where employees.DEPARTMENT_ID =departments.DEPARTMENT_ID
 	);
-
+````
 
 
