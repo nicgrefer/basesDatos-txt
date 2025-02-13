@@ -651,3 +651,22 @@ insert into emple_30 SELECT *
 FROM EMPLE, DEPART
 WHERE EMPLE.EMP_NO = DEPART.EMP_NO
 AND DEPART.DNOMBRE LIKE '%VENTAS%';
+
+---------------------
+
+insert into emple
+select 9999,'PEPE',null,null,sysdate,null,null, emple.dept_no 
+from emple
+group by emple.dept_no
+having count (*) = (select max (count(*)) from emple group by  emple.dept_no);
+
+------------------------
+
+Deberes
+--Introduce un nuevo empleado en la tabla EMPLE con los siguientes datos;
+--APELLIDO: 'Nuevo'
+--Nº DE EMPLEADO: 9999
+--FECHA DE ALTA: la actual
+--DEPARTAMENTO: el que no tiene ningun empleado
+--SALARIO: 1000
+--RESTO DE DATOS: desconocidos
