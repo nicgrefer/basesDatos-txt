@@ -6,7 +6,8 @@
 - [x] 🔗 Join
 - [x] 📊 Group by
 - [x] 🔄 OUTER JOIN (Los 2 modelos)
-- [ ] ➕ UNION, ➖ INTERSECT, ➗ MINUS
+- [x] ➕ UNION, ➖ INTERSECT, ➗ MINUS
+- [ ] 🔗 Insert
 
 # 📂 Estructura base
 
@@ -395,6 +396,50 @@ select * from hr.departments where exists (
 select * from hr.departments where not exists (
 	select * from hr.employees where employees.DEPARTMENT_ID =departments.DEPARTMENT_ID
 	);
+````
+
+# Insert 
+
+Consiste en insertar datos en las tablas podiendo ser de dos tipos:
+1. Una sola fila
+2. Multifila
+
+## Una fila
+
+**ESTRUCTURA** --> `Insert INTO` tabla (lista de columans) `VALUES`(valor1,valor2... "Valor a introducir en las columnas")<br><br>
+**Ejemplo** 
+```SQL
+-- Introducimos un nuevo departamento
+insert into depart values(99,'I+D','VALLADOLID');
+insert into depart values(90,null,null);
+insert into depart (DEPT_NO,DNOMBRE) values(80,'LOGISTICA');
+````
+
+## Multitabla
+
+**ESTRUCTURA** --> `Insert INTO` tabla (lista de columans) `SELECT`.... <br><br>
+**Ejemplo** 
+Primero creamos una nueva tabla
+
+``` SQL crea tabla
+CREATE TABLE EMPLE_30 (
+ EMP_NO    NUMBER(4) NOT NULL,
+ APELLIDO  VARCHAR2(10)  ,
+ OFICIO    VARCHAR2(10)  ,
+ DIR       NUMBER(4) ,
+ FECHA_ALT DATE      ,
+ SALARIO   NUMBER(7),
+ COMISION  NUMBER(7),
+ DEPT_NO   NUMBER(2) NOT NULL) ;
+
+````
+``` SQL
+->Introduce en la tabla Emple_30 los empleados que trabajan en el departamento 'VENTAS'
+
+insert into emple_30 SELECT *
+FROM EMPLE, DEPART
+WHERE EMPLE.EMP_NO = DEPART.EMP_NO
+AND DEPART.DNOMBRE LIKE '%VENTAS%';
 ````
 
 
