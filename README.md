@@ -610,3 +610,44 @@ select * from hr.departments;
 	    group by DEPARTMENTS.location_id
 	);
 
+------------------
+13/02/2025
+--(Script TABLAS I)
+-- Insercion de datos
+
+-- Insert
+---A) de una fila
+----	Insert INTO tabla [(lista de columans)] VALUES(valor1,valor2... "Valor a introducir en las columnas")
+
+desc depart;
+select* from depart;
+
+----- Introducimos un nuevo departamento
+insert into depart values(99,'I+D','VALLADOLID');
+insert into depart values(90,null,null);
+insert into depart (DEPT_NO,DNOMBRE) values(80,'LOGISTICA');
+
+---B) multifila -->SELECT
+----	Insert INTO tabla [(lista de columans)] SELECT....
+
+select* from emple;
+desc emple;
+select * from emple_30;
+desc emple_30;
+
+CREATE TABLE EMPLE_30 (
+ EMP_NO    NUMBER(4) NOT NULL,
+ APELLIDO  VARCHAR2(10)  ,
+ OFICIO    VARCHAR2(10)  ,
+ DIR       NUMBER(4) ,
+ FECHA_ALT DATE      ,
+ SALARIO   NUMBER(7),
+ COMISION  NUMBER(7),
+ DEPT_NO   NUMBER(2) NOT NULL) ;
+
+-- ->Introduce en la tabla Emple_30 los empleados que trabajan en el departamento 'VENTAs'
+
+insert into emple_30 SELECT *
+FROM EMPLE, DEPART
+WHERE EMPLE.EMP_NO = DEPART.EMP_NO
+AND DEPART.DNOMBRE LIKE '%VENTAS%';
