@@ -1,5 +1,8 @@
--- Borrado de datos (filas de una tabla)<br>
---- DELETE [FROM] nombre_tabla WHERE (condicion)---> (No se puede elimianr todas (las que sirven de "union" entre tablas))
+# Borrado de datos (filas de una tabla)
+
+## Estructura
+DELETE [FROM] nombre_tabla WHERE (condicion)---> (No se puede elimianr todas (las que sirven de "union" entre tablas))
+## Ejemplo 1
 >Crear tabla (que usamos para borrar)
 
     CREATE TABLE EMPLE_30 (
@@ -33,7 +36,18 @@
     delete emple_30 
     where salario>1500;
 ---
+
+## Ejemplo 2
 -- Borrar los departamentos con menos de 4 empleados
+
+        DELETE FROM DEPART 
+        WHERE DEPT_NO IN (
+                            SELECT DEPT_NO 
+                            FROM EMPLE 
+                            GROUP BY DEPT_NO
+                            HAVING COUNT(*) < 4
+                        );
+## Ejemplo 3
 -- Borrar las filas de la tabla Libreria cuyos ejemplares no superen la media de ejemplares en el estante
 
     
