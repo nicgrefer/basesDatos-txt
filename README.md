@@ -670,3 +670,12 @@ Deberes
 --DEPARTAMENTO: el que no tiene ningun empleado
 --SALARIO: 1000
 --RESTO DE DATOS: desconocidos
+
+		    INSERT INTO EMPLE (APELLIDO, EMP_NO, FECHA_ALT, DEPT_NO, SALARIO)
+		    VALUES (
+		        'Nuevo',
+		        9999,
+		        SYSDATE,
+		        (SELECT DEPT_NO FROM DEPART MINUS SELECT DISTINCT DEPT_NO FROM EMPLE),
+		        1000
+		    );
