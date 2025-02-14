@@ -679,3 +679,5 @@ Deberes
 		        (SELECT DEPT_NO FROM DEPART MINUS SELECT DISTINCT DEPT_NO FROM EMPLE),
 		        1000
 		    );
+-- 14/02/2025
+[Borrado de datos](https://github.com/nicgrefer/basesDatos-txt/blob/main/ejemplos%20Borrar.md)
