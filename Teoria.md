@@ -7,7 +7,8 @@
 - [x] 📊 Group by
 - [x] 🔄 OUTER JOIN (Los 2 modelos)
 - [x] ➕ UNION, ➖ INTERSECT, ➗ MINUS
-- [ ] 🔗 Insert
+- [x] 🔗 Insert
+- [ ] Delete
 
 # 📂 Estructura base
 
@@ -442,4 +443,6 @@ WHERE EMPLE.EMP_NO = DEPART.EMP_NO
 AND DEPART.DNOMBRE LIKE '%VENTAS%';
 ````
 
+# Delet
+[Ejemplos borrado de datos](https://github.com/nicgrefer/basesDatos-txt/blob/main/ejemplos%20Borrar.md)
 
