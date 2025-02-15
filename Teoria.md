@@ -444,5 +444,39 @@ AND DEPART.DNOMBRE LIKE '%VENTAS%';
 ````
 
 # Delet
-[Ejemplos borrado de datos](https://github.com/nicgrefer/basesDatos-txt/blob/main/ejemplos%20Borrar.md)
 
+Consiste en eliminar datos de una tabla pero no todos los datos son posibles eliminar, ya que hay algunois que son necesarios para la union entre tablas, es decir las `PK` ej:
+
+--> Tabla 1
+|Dato|Tipo dato|
+|----|---------|
+|ID alumno| numero|
+|ID Tutor| numero|
+|Clase| Character 2|
+...
+
+--> Tabla 2
+|Dato|Tipo dato|
+|----|---------|
+|ID tutor| numero|
+...
+
+
+## Estructura:
+
+`DELETE [FROM]` nombre_tabla `WHERE` (condicion)---> (No se puede elimianr todas (las que sirven de "union" entre tablas))
+
+## Ejemplos:
+
+    DELETE FROM DEPART 
+    WHERE DEPT_NO IN (
+                        SELECT DEPT_NO 
+                        FROM EMPLE 
+                        GROUP BY DEPT_NO
+                        HAVING COUNT(*) < 4
+                    );
+
+>[!NOTE]
+> [mas ejemplos](https://github.com/nicgrefer/basesDatos-txt/blob/main/ejemplos%20Borrar.md)
+
+---
