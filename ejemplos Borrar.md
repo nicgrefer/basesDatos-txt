@@ -50,4 +50,11 @@ DELETE [FROM] nombre_tabla WHERE (condicion)---> (No se puede elimianr todas (la
 ## Ejemplo 3
 -- Borrar las filas de la tabla Libreria cuyos ejemplares no superen la media de ejemplares en el estante
 
-    
+    DELETE FROM Libreria l1 
+    WHERE ejemplares <= (
+        SELECT AVG(ejemplares) 
+        FROM Libreria l2
+        WHERE l2.estante = l1.estante
+    );
+
+    select * from libreria;
