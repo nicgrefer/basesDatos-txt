@@ -480,3 +480,61 @@ Consiste en eliminar datos de una tabla pero no todos los datos son posibles eli
 > [mas ejemplos](https://github.com/nicgrefer/basesDatos-txt/blob/main/ejemplos%20Borrar.md)
 
 ---
+
+# UPDATE 
+El comando UPDATE se utiliza para modificar uno o más registros existentes en una tabla. Es útil cuando necesitas corregir datos, actualizar información obsoleta o ajustar valores en función de ciertas condiciones.
+
+## Sintaxis básica
+````sql
+Copiar código
+UPDATE nombre_tabla
+SET columna1 = valor1,
+    columna2 = valor2,
+    ...
+WHERE condicion;
+````
+Explicación:
+UPDATE nombre_tabla: Especifica la tabla donde quieres modificar registros.<br>
+SET: Indica las columnas y los nuevos valores que deseas asignar.<br>
+WHERE: Establece una condición para identificar qué registros se deben modificar.<br>
+⚠️ Si no usas WHERE, ¡se actualizarán todos los registros de la tabla!<br>
+
+## Ejemplo práctico (como el que mencionaste)
+````sql
+Copiar código
+UPDATE employees
+SET email = 'john.doe@newdomain.com'
+WHERE employee_id = 1;
+````
+¿Qué hace este comando?
+
+Busca el registro en la tabla employees donde employee_id sea igual a 1.
+Actualiza el valor del campo email a john.doe@newdomain.com.
+## 🛠️ Casos especiales
+### 1. Actualizar múltiples columnas
+````sql
+Copiar código
+UPDATE employees
+SET email = 'jane.smith@newdomain.com',
+    salary = 60000
+WHERE employee_id = 2;
+````
+Esto actualiza tanto el correo como el salario del empleado con employee_id = 2.
+
+### 2. Actualizar todos los registros (sin WHERE)
+````sql
+Copiar código
+UPDATE employees
+SET department = 'Sales';
+````
+Esto asigna el departamento "Sales" a todos los empleados de la tabla.<br>
+⚠️ ¡Cuidado con usar esto sin pensarlo bien!
+
+### 3. Actualizar con condiciones complejas
+````sql
+Copiar código
+UPDATE employees
+SET salary = salary * 1.1
+WHERE department = 'Sales' AND hire_date < TO_DATE('2020-01-01', 'YYYY-MM-DD');
+````
+Aquí se aplica un aumento del 10% solo a los empleados del departamento "Sales" contratados antes de 2020.
