@@ -452,3 +452,86 @@ where ejemplares < (select ejemplares from libreria where tema = 'MEDICINA');
 select * from libreria
 where ejemplares = (select max(ejemplares) from libreria
     				where tema like '%E%');
+
+--------------------------------------------------------------
+
+Cara 7
+
+--1.1
+INSERT INTO emple (EMP_NO, apellido, oficio, dir, fecha_alt, salario, comision, dept_no)
+VALUES (
+    2000,
+    'SAAVEDRA',
+    (SELECT oficio FROM emple WHERE apellido = 'SALA'),
+    (SELECT dir FROM emple WHERE apellido = 'SALA'),
+    SYSDATE,
+    (SELECT salario * 1.20 FROM emple WHERE apellido = 'SALA'),
+    (SELECT comision FROM emple WHERE apellido = 'SALA'),
+    (SELECT dept_no FROM emple WHERE apellido = 'SALA')
+);
+
+--1.2
+update emple
+set SALARIO = SALARIO + 100,
+ 	COMISION = COMISION + 10
+where DEPT_NO = 10;
+
+-- 1.3
+UPDATE emple
+SET dept_no = (
+    SELECT max(dept_no)
+    FROM emple
+    WHERE oficio = 'EMPLEADO'
+)
+WHERE apellido = 'SAAVEDRA';
+
+--1.4
+DELETE FROM depart
+WHERE dept_no IN (
+    SELECT d.dept_no
+    FROM depart d
+    LEFT JOIN emple e ON d.dept_no = e.dept_no
+    GROUP BY d.dept_no
+    HAVING COUNT(e.empno) = 0
+);
+
+-- 2.1
+insert into  ALUM
+values (select * from NUEVOS);
+
+--2.2
+delete from alum 
+where NOMBRE in (select NOMBRE from antiguos);
+
+--3.1
+update centros 
+set NUM_PLAZAS =NUM_PLAZAS/2
+where cod_centro in(select count (cod_centro) from personal  group by cod_centro having cod_centro <2);
+
+--3.2 ¿?
+--3.3.Elimina los centros que no tengan personal.
+
+delete centros
+where cod_centro not exists (
+    SELECT cod_centro
+	FROM personal
+	GROUP BY cod_centro
+	HAVING COUNT(*) > 0
+);
+
+-- 3.4
+INSERT INTO personal (dni, APELLIDOS, FUNCION, COD_CENTRO)
+SELECT '8790055', 'Clara Salas', 'IDIOMA', COD_CENTRO
+FROM personal
+WHERE FUNCION = 'ADMINISTRATIVO'
+GROUP BY COD_CENTRO
+HAVING COUNT(*) = 1;
+
+--3.5
+delete from personal
+where cod_centro in (select cod_centro from CENTROS where NUM_PLAZAS>=300 ) 
+and cod_centro in ( select cod_centro from PROFESORES group by  cod_centro having count (*)<2 );
+
+-- 3.6
+delete from PROFESORES
+where dni not in (select dni from PERSONAL );
