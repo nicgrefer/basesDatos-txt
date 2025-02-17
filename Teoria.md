@@ -594,60 +594,84 @@ SELECT * FROM employees WHERE employee_id = 101;
 ----
 
 
-# UPDATE 
-El comando UPDATE se utiliza para modificar uno o más registros existentes en una tabla. Es útil cuando necesitas corregir datos, actualizar información obsoleta o ajustar valores en función de ciertas condiciones.
+#  `UPDATE` 
 
-## Sintaxis básica
-````sql
-Copiar código
+El comando `UPDATE` se utiliza para modificar uno o más registros existentes en una tabla. Es útil cuando necesitas corregir datos, actualizar información obsoleta o ajustar valores en función de ciertas condiciones.
+
+## **Sintaxis básica**
+
+```sql
 UPDATE nombre_tabla
 SET columna1 = valor1,
     columna2 = valor2,
     ...
 WHERE condicion;
-````
-Explicación:
-UPDATE nombre_tabla: Especifica la tabla donde quieres modificar registros.<br>
-SET: Indica las columnas y los nuevos valores que deseas asignar.<br>
-WHERE: Establece una condición para identificar qué registros se deben modificar.<br>
-⚠️ Si no usas WHERE, ¡se actualizarán todos los registros de la tabla!<br>
+```
 
-## Ejemplo práctico (como el que mencionaste)
-````sql
-Copiar código
+## **Explicación:**
+
+- **`UPDATE nombre_tabla`:** Especifica la tabla donde quieres modificar registros.
+- **`SET`:** Indica las columnas y los nuevos valores que deseas asignar.
+- **`WHERE`:** Establece una condición para identificar qué registros se deben modificar.  
+  ⚠️ Si no usas `WHERE`, ¡se actualizarán *todos* los registros de la tabla!
+
+---
+
+## **Ejemplo práctico (como el que mencionaste)**
+
+```sql
 UPDATE employees
 SET email = 'john.doe@newdomain.com'
 WHERE employee_id = 1;
-````
-¿Qué hace este comando?
+```
 
-Busca el registro en la tabla employees donde employee_id sea igual a 1.
-Actualiza el valor del campo email a john.doe@newdomain.com.
-## 🛠️ Casos especiales
-### 1. Actualizar múltiples columnas
-````sql
-Copiar código
+**¿Qué hace este comando?**
+
+1. Busca el registro en la tabla `employees` donde `employee_id` sea igual a 1.  
+2. Actualiza el valor del campo `email` a `john.doe@newdomain.com`.
+
+---
+
+## 🛠️ **Casos especiales**
+
+### 1. **Actualizar múltiples columnas**
+```sql
 UPDATE employees
 SET email = 'jane.smith@newdomain.com',
     salary = 60000
 WHERE employee_id = 2;
-````
-Esto actualiza tanto el correo como el salario del empleado con employee_id = 2.
+```
+Esto actualiza tanto el correo como el salario del empleado con `employee_id = 2`.
 
-### 2. Actualizar todos los registros (sin WHERE)
-````sql
-Copiar código
+### 2. **Actualizar todos los registros (sin `WHERE`)**
+```sql
 UPDATE employees
 SET department = 'Sales';
-````
-Esto asigna el departamento "Sales" a todos los empleados de la tabla.<br>
+```
+Esto asigna el departamento "Sales" a todos los empleados de la tabla.  
 ⚠️ ¡Cuidado con usar esto sin pensarlo bien!
 
-### 3. Actualizar con condiciones complejas
-````sql
-Copiar código
+### 3. **Actualizar con condiciones complejas**
+```sql
 UPDATE employees
 SET salary = salary * 1.1
 WHERE department = 'Sales' AND hire_date < TO_DATE('2020-01-01', 'YYYY-MM-DD');
-````
+```
 Aquí se aplica un aumento del 10% solo a los empleados del departamento "Sales" contratados antes de 2020.
+
+---
+
+## 🚨 **Buenas prácticas**
+
+1. **Siempre usa `WHERE` si no quieres afectar todos los registros.**  
+2. **Haz una copia de seguridad si vas a modificar datos críticos.**  
+3. **Verifica con una consulta `SELECT` antes de aplicar el `UPDATE`.**
+
+**Consulta previa de control:**
+```sql
+SELECT * FROM employees WHERE employee_id = 1;
+```
+
+Así confirmas qué datos se modificarán antes de ejecutar el `UPDATE`.
+
+---
