@@ -480,6 +480,119 @@ Consiste en eliminar datos de una tabla pero no todos los datos son posibles eli
 > [mas ejemplos](https://github.com/nicgrefer/basesDatos-txt/blob/main/ejemplos%20Borrar.md)
 
 ---
+# 🛠️  `INSERT`
+
+El comando `INSERT` se utiliza para agregar nuevas filas (registros) a una tabla. Es fundamental cuando necesitas introducir nuevos datos en tu base de datos, como registrar nuevos empleados, productos o transacciones.
+
+---
+
+## 🔍 **Sintaxis básica**
+
+```sql
+INSERT INTO nombre_tabla (columna1, columna2, columna3, ...)
+VALUES (valor1, valor2, valor3, ...);
+```
+
+## **Explicación:**
+
+- **`INSERT INTO`:** Es el comando que indica que queremos insertar datos.  
+- **`nombre_tabla`:** Especifica la tabla donde se insertarán los nuevos registros.  
+- **`(columna1, columna2, ...)`:** Lista opcional que indica en qué columnas se insertarán los valores.  
+- **`VALUES`:** Palabra clave que precede a los datos que queremos insertar.  
+- **`(valor1, valor2, ...)`:** Los valores que se insertarán, respetando el orden y tipo de datos de las columnas.
+
+⚠️ **Importante:**  
+- La cantidad de columnas debe coincidir con la cantidad de valores.  
+- Los valores deben ser del tipo correcto (números, cadenas, fechas, etc.).
+
+---
+
+## 📖 **Ejemplos prácticos**
+
+### 1️⃣ **Inserción simple (especificando columnas)**
+
+```sql
+INSERT INTO employees (employee_id, first_name, last_name, email, salary)
+VALUES (101, 'John', 'Doe', 'john.doe@company.com', 50000);
+```
+
+**¿Qué pasa aquí?**
+
+- Se inserta un nuevo empleado con ID 101, nombre "John Doe", correo electrónico "john.doe@company.com" y salario de 50,000.
+
+---
+
+### 2️⃣ **Inserción sin especificar columnas**
+
+Si insertas valores para **todas las columnas** en el orden definido en la base de datos, puedes omitir la lista de columnas:
+
+```sql
+INSERT INTO employees
+VALUES (102, 'Jane', 'Smith', 'jane.smith@company.com', 60000);
+```
+
+**⚠️ Precaución:**  
+Esto funciona solo si conoces exactamente el orden de las columnas. Si luego se agrega o cambia una columna, esta instrucción fallará o insertará datos incorrectos.
+
+---
+
+### 3️⃣ **Inserción múltiple (Oracle 12c y posteriores)**
+
+```sql
+INSERT ALL
+    INTO employees (employee_id, first_name, last_name, email, salary) 
+    VALUES (103, 'Alice', 'Johnson', 'alice.johnson@company.com', 55000)
+    INTO employees (employee_id, first_name, last_name, email, salary) 
+    VALUES (104, 'Bob', 'Brown', 'bob.brown@company.com', 48000)
+SELECT * FROM dual;
+```
+
+**¿Qué hace?**
+
+- Inserta dos nuevos registros a la vez.  
+- `dual` es una tabla especial en Oracle que se usa para este tipo de operaciones.
+
+---
+
+### 4️⃣ **Inserción a partir de una consulta (`INSERT INTO SELECT`)**
+
+```sql
+INSERT INTO employees (employee_id, first_name, last_name, email, salary)
+SELECT employee_id, first_name, last_name, email, salary
+FROM old_employees
+WHERE hire_date < TO_DATE('2020-01-01', 'YYYY-MM-DD');
+```
+
+**¿Qué hace?**
+
+- Copia los datos de empleados contratados antes de 2020 desde la tabla `old_employees` hacia `employees`.
+
+---
+
+## ⚠️ **Errores comunes y cómo evitarlos**
+
+1. **Inconsistencia de tipos:**  
+   - Si `salary` es un número, no puedes insertar una cadena.  
+   - Correcto: `50000`  
+   - Incorrecto: `'50000'` *(si no es tipo cadena)*.
+
+2. **Valores nulos en columnas `NOT NULL`:**  
+   - Si una columna no permite `NULL`, debes proporcionar un valor.
+
+3. **Violación de claves primarias:**  
+   - No puedes insertar un valor duplicado en una columna que es clave primaria.
+
+---
+
+## 🔍 **Verificación después de insertar**
+
+Después de insertar datos, puedes usar un `SELECT` para confirmar que la operación fue exitosa:
+
+```sql
+SELECT * FROM employees WHERE employee_id = 101;
+```
+----
+
 
 # UPDATE 
 El comando UPDATE se utiliza para modificar uno o más registros existentes en una tabla. Es útil cuando necesitas corregir datos, actualizar información obsoleta o ajustar valores en función de ciertas condiciones.
