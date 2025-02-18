@@ -508,7 +508,16 @@ update centros
 set NUM_PLAZAS =NUM_PLAZAS/2
 where cod_centro in(select count (cod_centro) from personal  group by cod_centro having cod_centro <2);
 
---3.2 ¿?
+--3.2 
+update CENTROS
+set NUM_PLAZAS = NUM_PLAZAS/2
+where cod_centro in(
+    select cod_centro 
+    from PROFESORES 
+    group by cod_centro 
+    having count(cod_centro)<2 
+);
+
 --3.3.Elimina los centros que no tengan personal.
 
 delete centros
