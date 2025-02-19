@@ -544,3 +544,79 @@ and cod_centro in ( select cod_centro from PROFESORES group by  cod_centro havin
 -- 3.6
 delete from PROFESORES
 where dni not in (select dni from PERSONAL );
+
+
+--4.1  Da de alta un nuevo artículo de 'Primera' categoría para los fabricantes de 'FRANCIA' y abastece con 5 unidades de ese artículo a todas las tiendas y en la fecha de hoy.
+-- No funciona
+insert all
+into ARTICULOS (CATEGORIA,COD_FABRICANTE)
+values(
+    'Primera',
+    (select COD_FABRICANTE from TIENDAS where PAIS = 'FRANCIA' )
+)
+into TIENDAS(CATEGORIA,COD_FABRICANTE,UNIDADES_PEDIDAS,FECHA_PEDIDO)
+values(
+    'Primera',
+    (select COD_FABRICANTE from TIENDAS where PAIS = 'FRANCIA' ),
+    5,
+    SYSDATE
+    
+)
+
+--4.2 Inserta un pedido de 20 unidades en la tienda '1111- A' con el artículo que mayor número de ventas haya realizado.
+--> no hay ventas de 1111-A --> x tanto lo hago de unidades pedidas (Canutillos)
+insert into PEDIDOS (NIF,UNIDADES_PEDIDAS,ARTICULO,COD_FABRICANTE,PESO,CATEGORIA,FECHA_PEDIDO)
+values (
+    '1111-A',
+    20,
+    (select ARTICULO from PEDIDOS where NIF='1111-A' and UNIDADES_PEDIDAS = (select max(UNIDADES_PEDIDAS)from PEDIDOS where NIF ='1111-A' )),
+    (select COD_FABRICANTE from PEDIDOS where NIF='1111-A' and UNIDADES_PEDIDAS = (select max(UNIDADES_PEDIDAS)from PEDIDOS where NIF ='1111-A' )),
+    (select PESO from PEDIDOS where NIF='1111-A' and UNIDADES_PEDIDAS = (select max(UNIDADES_PEDIDAS)from PEDIDOS where NIF ='1111-A' )),
+    (select CATEGORIA from PEDIDOS where NIF='1111-A' and UNIDADES_PEDIDAS = (select max(UNIDADES_PEDIDAS)from PEDIDOS where NIF ='1111-A' )),
+    SYSDATE
+);
+
+--4.3 Da de alta una tienda en la provincia de 'MADRID' y abastécela con 20 unidades de cada uno de los artículos existentes.
+
+insert into TIENDAS(nif,PROVINCIA)
+values ('2223-A','MADRID')
+
+insert into PEDIDOS (NIF,ARTICULO,COD_FABRICANTE,PESO,CATEGORIA,FECHA_PEDIDO,UNIDADES_PEDIDAS)
+select '2223-A',ARTICULO,COD_FABRICANTE,PESO,CATEGORIA,FECHA_PEDIDO,20
+from PEDIDOS
+group by ARTICULO,COD_FABRICANTE,PESO,CATEGORIA,FECHA_PEDIDO;
+
+-- 4.4 Da de alta dos tiendas en la provincia de 'SEVILLA' y abastécelas con 30 unidades de artículos de la marca de fabricante 'GALLO'.
+desc FABRICANTES;
+INSERT INTO TIENDAS (NIF, NOMBRE, DIRECCION, POBLACION, PROVINCIA, CODPOSTAL)
+VALUES ('2580-S', NULL, NULL, NULL, 'SEVILLA', NULL);
+
+INSERT INTO TIENDAS (NIF, NOMBRE, DIRECCION, POBLACION, PROVINCIA, CODPOSTAL)
+VALUES ('2581-S', NULL, NULL, NULL, 'SEVILLA', NULL);
+
+insert into PEDIDOS
+select '2580-S',ARTICULO,COD_FABRICANTE,PESO,CATEGORIA,FECHA_PEDIDO,30 
+from PEDIDOS
+where COD_FABRICANTE = (select COD_FABRICANTE from FABRICANTES where NOMBRE = 'GALLO' )
+group by ARTICULO,COD_FABRICANTE,PESO,CATEGORIA,FECHA_PEDIDO
+    
+insert into PEDIDOS
+select '2581-S',ARTICULO,COD_FABRICANTE,PESO,CATEGORIA,FECHA_PEDIDO,30 
+from PEDIDOS
+where COD_FABRICANTE = (select COD_FABRICANTE from FABRICANTES where NOMBRE = 'GALLO' )
+group by ARTICULO,COD_FABRICANTE,PESO,CATEGORIA,FECHA_PEDIDO
+
+-- 4.5 Realiza una venta para todas las tiendas de 'TOLEDO' de 10 unidades en los artículos de 'Primera' categoría.
+
+insert into VENTAS (NIF,ARTICULO,COD_FABRICANTE,PESO,CATEGORIA,FECHA_VENTA,UNIDADES_VENDIDAS)
+select t.NIF,a.ARTICULO,a.COD_FABRICANTE,a.PESO,a.CATEGORIA,sysdate,10
+from  TIENDAS t 
+join ARTICULOS a on a.CATEGORIA = 'Primera'
+where  T.PROVINCIA = 'TOLEDO';
+
+-- 4.6 Para aquellos articulas de los que se hayan vendido más de 30 unidades, realiza un pedido de 10 unidades para la tienda con NIF '5555-B' con la fecha actual.
+
+insert into PEDIDOS (NIF,ARTICULO,COD_FABRICANTE,PESO,CATEGORIA,FECHA_PEDIDO,UNIDADES_PEDIDAS)
+select '5555-B',ARTICULO,COD_FABRICANTE,PESO,CATEGORIA,sysdate,10
+from VENTAS
+where UNIDADES_VENDIDAS>30
