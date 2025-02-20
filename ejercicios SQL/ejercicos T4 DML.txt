@@ -620,3 +620,26 @@ insert into PEDIDOS (NIF,ARTICULO,COD_FABRICANTE,PESO,CATEGORIA,FECHA_PEDIDO,UNI
 select '5555-B',ARTICULO,COD_FABRICANTE,PESO,CATEGORIA,sysdate,10
 from VENTAS
 where UNIDADES_VENDIDAS>30
+
+-- 4.7 Cambia los datos de la tienda con NIF '1111-A' igualándolos a los de la tienda con NIF '2222-A'.
+
+select * from TIENDAS;
+update TIENDAS
+set NOMBRE = (select NOMBRE from TIENDAS where nif = '2222-A'),
+ DIRECCION = (select DIRECCION from TIENDAS where nif = '2222-A'),
+ POBLACION  = (select POBLACION from TIENDAS where nif = '2222-A'),
+ PROVINCIA = (select PROVINCIA from TIENDAS where nif = '2222-A'),
+ CODPOSTAL = (select CODPOSTAL from TIENDAS where nif = '2222-A')
+where nif = '1111-A';
+
+-- 4.8 Cambia todos los articulas de 'Primera' categoría a 'Segunda' categoría del país 'ITALIA'.
+
+update ARTICULOS
+set CATEGORIA = 'Segunda'
+where COD_FABRICANTE = (select COD_FABRICANTE from FABRICANTES where PAiS = 'ITALIA' );
+
+-- 4.9 Modifica aquellos pedidos en los que la cantidad pedida sea superior a
+-- las existencias del artículo, asignando el 20% de las existencias a 
+-- la cantidad que se ha pedido
+
+-- 4.10
