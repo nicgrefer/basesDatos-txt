@@ -642,4 +642,29 @@ where COD_FABRICANTE = (select COD_FABRICANTE from FABRICANTES where PAiS = 'ITA
 -- las existencias del artículo, asignando el 20% de las existencias a 
 -- la cantidad que se ha pedido
 
--- 4.10
+-- 4.10 Elimina aquellas tiendas que no han realizado ventas
+
+delete from TIENDAS
+where nif not in (SELECT distinct nif FROM VENTAS);
+
+-- 4.11 Elimina los artículos que no hayan tenido ni compras ni ventas
+
+delete from ARTICULOS
+where ARTICULO not in ( select distinct ARTICULO from VENTAS) and ARTICULO not in (select distinct ARTICULO from PEDIDOS);
+
+-- 4.12 Borra los pedidos e 'Primera' categoría cuyo país de procedencia sea 'BELGICA'
+
+delete from PEDIDOS
+where CATEGORIA = 'Primera' and COD_FABRICANTE = (select COD_FABRICANTE from FABRICANTES where PAIS ='BELGICA');
+
+-- 4.13 Borra los pedidos que no tengan tienda
+
+delete from PEDIDOS
+where NIF not in (select distinct NIF from TIENDAS );
+
+-- 4.14 Resta uno a las unidades de los últimos pedidos de la tienda con NIF '5555-B'
+
+update PEDIDOS
+set UNIDADES_PEDIDAS=UNIDADES_PEDIDAS-1
+where NIF = '5555-B' and FECHA_PEDIDO = (select max(FECHA_PEDIDO) from PEDIDOS where NIF = '5555-B' );
+
