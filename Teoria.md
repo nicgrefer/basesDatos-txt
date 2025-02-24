@@ -11,7 +11,7 @@
 - [ ] Delete
 
 # 📂 Estructura base
-
+![MIT note](https://img.shields.io/badge/Teoria-yellow.svg)
 ## 🔢 Select
 
 Para recuperar información o, lo que es lo mismo, realizar consultas a la base de datos.
