@@ -1,5 +1,6 @@
 # basesDatos teoria consultas 
-
+![MIT note](https://img.shields.io/badge/Teoria-yellow.svg)
+![MIT note](https://img.shields.io/badge/Ejercicios-orange.svg)
 
 > [!NOTE]  
 > Esto es las propias consultas que hemos realizado en clase y puede ser que halla cosas que no estén del todo bien.
