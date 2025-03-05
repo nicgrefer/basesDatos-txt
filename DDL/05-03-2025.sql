@@ -13,7 +13,7 @@ CREATE TABLE personas (
 );
 CREATE table provincias(
 
-    codigo_provincia	char(2)		CONSTRAINT  prbincia_pk primary key,
+    codigo_provincia	char(2)		CONSTRAINT  provincia_pk primary key,
     nombre_provincia	varchar(50) not null
 );
 
@@ -35,7 +35,7 @@ alter table provincias
 
 -- Desabiñitamos la resstriccion de provincia
 alter table provincias 
-    disable constraint prbincia_pk;
+    disable constraint provincia_pk;
 
 
 
