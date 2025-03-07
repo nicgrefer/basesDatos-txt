@@ -10,8 +10,57 @@
 - [x] 🔗 Insert
 - [ ] Delete
 
-# 📂 Estructura base
 ![MIT note](https://img.shields.io/badge/Teoria-yellow.svg)
+
+# La arquitectura de Oracle se divide en dos partes principales:  
+
+1. **Base de datos** (estructura física)  
+2. **Instancia** (estructura lógica y procesos en memoria)  
+
+---  
+
+## ️**Base de datos (estructura física en disco)**  
+La base de datos de Oracle está formada por varios tipos de ficheros almacenados en disco:  
+
+### 📌 **Ficheros de datos**  
+- Contienen la información real de la base de datos.  
+- Se agrupan en **tablespaces**, que organizan los datos de forma lógica.  
+- Ejemplo: en un tablespace se almacenan las tablas, en otro los índices, etc.  
+
+### 📌 **Ficheros de actualización (Redo Log Files)**  
+- Guardan un historial de los cambios realizados en la base de datos.  
+- Permiten recuperar datos en caso de fallo.  
+- Se utilizan en procesos de **recuperación ante fallos** y para **garantizar la integridad**.  
+
+### 📌 **Ficheros de control**  
+- Contienen metadatos esenciales sobre la base de datos, como la estructura y la ubicación de los ficheros de datos y de actualización.  
+- Son esenciales para que Oracle pueda abrir y gestionar la base de datos.  
+
+---
+
+## 2️⃣ **Instancia (estructura lógica y procesos en memoria)**  
+Cuando se inicia una base de datos Oracle, se crea una **instancia**, que es un conjunto de estructuras en memoria y procesos en segundo plano.  
+
+### 🖥 **Estructuras en memoria**  
+- **SGA (System Global Area)**: Espacio en memoria donde se almacenan datos y estructuras de control.  
+- **PGA (Program Global Area)**: Memoria privada utilizada por cada sesión o proceso que accede a la base de datos.  
+
+### ⚙ **Procesos en segundo plano**  
+- **DBWn (Database Writer)**: Escribe los datos modificados en los ficheros de datos.  
+- **LGWR (Log Writer)**: Guarda los cambios en los ficheros de actualización (Redo Logs).  
+- **CKPT (Checkpoint Process)**: Actualiza los ficheros de control para indicar qué datos se han guardado en disco.  
+- **SMON (System Monitor)**: Recupera la base de datos tras un fallo.  
+- **PMON (Process Monitor)**: Gestiona procesos inactivos y libera recursos bloqueados.  
+
+---
+
+## 📌 **Resumen**  
+- **Base de datos** → Ficheros en disco (datos, logs, control)  
+- **Instancia** → Memoria (SGA, PGA) + Procesos en segundo plano  
+
+
+# 📂 Estructura base
+
 ## 🔢 Select
 
 Para recuperar información o, lo que es lo mismo, realizar consultas a la base de datos.
