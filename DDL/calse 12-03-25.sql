@@ -40,3 +40,6 @@ select * from Empleados30;
 create or replace VIEW  Empleados30 (num_empleado,nombre,fechaInicio,departamento)
 as 
 select emp.EMPNO,emp.ENAME, emp.HIREDATE,emp.DEPTNO from  SCOTT.emp where emp.DEPTNO = 30;
+
+---------------- 
+
