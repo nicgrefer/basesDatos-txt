@@ -724,3 +724,5 @@ SELECT * FROM employees WHERE employee_id = 1;
 Así confirmas qué datos se modificarán antes de ejecutar el `UPDATE`.
 
 ---
+
+[Teoría de DDL](DDL/README.md)

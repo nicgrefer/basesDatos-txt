@@ -31,6 +31,13 @@ CREATE TABLE nueva_tabla AS
 SELECT * FROM otra_tabla;
 ```
 
+### 🔍 Consultas útiles:
+```sql
+SELECT * FROM user_tables;        -- ✅ Ver todas las tablas del usuario
+SELECT * FROM user_constraints;   -- ✅ Ver restricciones (PK, FK, etc.)
+SELECT * FROM user_tab_columns;   -- ✅ Ver columnas de las tablas del usuario
+```
+
 ---
 
 ## 👀 Vistas
@@ -51,6 +58,34 @@ SELECT columna1, columna2 FROM tabla_base;
 DROP VIEW nombre_vista;
 ```
 
+### 📌 Ejemplo práctico con `empleYdepart.sql`
+```sql
+SELECT * FROM emple;
+DESC emple;
+SELECT * FROM depart;
+SELECT * FROM user_views;
+
+CREATE OR REPLACE VIEW Empleados30 (EMP_NO, APELLIDO, FECHA_ALT, DEPT_NO)
+AS 
+SELECT EMP_NO, APELLIDO, FECHA_ALT, DEPT_NO FROM EMPLE WHERE DEPT_NO = 30;
+
+-- Intentamos insertar un nuevo empleado
+INSERT INTO Empleados30 VALUES (999,'Prueba',SYSDATE,20);
+-- No aparece en la vista debido a la restricción del filtro DEPT_NO = 30.
+
+-- Solución: incluir `WITH CHECK OPTION`
+CREATE OR REPLACE VIEW Empleados30 (EMP_NO, APELLIDO, FECHA_ALT, DEPT_NO)
+AS 
+SELECT EMP_NO, APELLIDO, FECHA_ALT, DEPT_NO FROM EMPLE WHERE DEPT_NO = 30
+WITH CHECK OPTION;
+
+-- Ahora la inserción es válida solo si DEPT_NO es 30
+INSERT INTO Empleados30 VALUES (999,'Prueba',SYSDATE,30);
+
+-- Si intentamos agregar un empleado con un departamento diferente a 30, fallará
+INSERT INTO Empleados30 VALUES (999,'Prueba',SYSDATE,20);
+```
+
 ---
 
 ## 🏛️ Restricciones
@@ -62,6 +97,24 @@ DROP VIEW nombre_vista;
 4. **`DEFAULT`**: Asigna un valor por defecto si no se especifica otro.
 5. **`CHECK`**: Restringe los valores permitidos en una columna.
 6. **`UNIQUE`**: Evita valores repetidos en una columna.
+
+### 🔍 Verificación y creación de claves primarias
+```sql
+-- Verificar si ya existen claves primarias en EMPLE y DEPART
+SELECT * FROM USER_CONSTRAINTS WHERE TABLE_NAME IN ('EMPLE', 'DEPART');
+
+-- Ver estructura de las tablas
+DESC EMPLE;
+DESC DEPART;
+
+-- Crear clave primaria en EMPLE si no existe
+ALTER TABLE EMPLE
+ADD CONSTRAINT EMPLE_PK PRIMARY KEY (EMP_NO);
+
+-- Crear clave primaria en DEPART si no existe
+ALTER TABLE DEPART
+ADD CONSTRAINT DEPART_PK PRIMARY KEY (DEPT_NO);
+```
 
 ---
 
@@ -157,6 +210,4 @@ ALTER INDEX nombre_indice NOMONITORING USAGE;
 - Las restricciones ayudan a mantener la integridad de los datos.
 - Las vistas y los índices mejoran la eficiencia y seguridad.
 - Las secuencias son útiles para generar identificadores únicos.
-
-
 
