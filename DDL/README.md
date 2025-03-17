@@ -200,7 +200,10 @@ ALTER INDEX nombre_indice MONITORING USAGE;
 ```sql
 ALTER INDEX nombre_indice NOMONITORING USAGE;
 ```
-
+Para poder **ver lo que se ha creado** correctamente el indice se usa:
+```sql
+SELECT * FROM USER_INDEXES;
+```
 ---
 
 ## 🎯 Conclusión

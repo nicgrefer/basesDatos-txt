@@ -42,3 +42,5 @@ ADD CONSTRAINT EMPLE_PK PRIMARY KEY (EMP_NO);
 ALTER TABLE DEPART
 ADD CONSTRAINT DEPART_PK PRIMARY KEY (DEPT_NO);
 
+-- Indexamos la tabla emple con la columna apellido y comprovamos la creaccion del indice
+create index apellido_idx on emple (APELLIDO);
