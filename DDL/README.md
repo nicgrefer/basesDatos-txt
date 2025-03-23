@@ -1,216 +1,299 @@
-# 🔖 Apuntes de DDL (Data Definition Language)
+# Lenguaje SQL - DDL (Data Definition Language)
 
-## 🌐 Introducción
+## 1. Introducción al DDL
 
-- **DDL** es la parte de SQL que se encarga de definir y gestionar la estructura de las bases de datos.
-- Se usa para **crear, modificar y eliminar** objetos como tablas, vistas e índices.
-- Las instrucciones **DDL no pueden deshacerse** con `ROLLBACK`, así que hay que usarlas con precaución.
+El **DDL (Data Definition Language)** es un subconjunto del lenguaje SQL que se utiliza para definir y gestionar la estructura de los objetos en una base de datos relacional, como tablas, vistas, índices o secuencias. A diferencia del **DML (Data Manipulation Language)**, que se centra en manipular los datos (inserciones, actualizaciones, borrados), el DDL se ocupa de los **metadatos**, es decir, la definición de cómo se organizan los datos en el sistema gestor de bases de datos (SGBD).
+
+### Funciones principales del DDL
+- **Creación** de objetos (tablas, vistas, índices, etc.) con `CREATE`.
+- **Modificación** de la estructura de los objetos existentes con `ALTER`.
+- **Eliminación** de objetos con `DROP` o vaciado de datos con `TRUNCATE`.
+
+### Características importantes
+- Las instrucciones DDL son **permanentes**: una vez ejecutadas, no se pueden deshacer con un `ROLLBACK`, ya que generan un **commit implícito**. Por eso, es crucial planificar bien su uso y contar con copias de seguridad.
+- Cada usuario tiene un **esquema** asociado (normalmente con su mismo nombre), donde se almacenan sus objetos (tablas, vistas, etc.). Solo los propietarios o administradores pueden modificarlos, salvo que se otorguen permisos específicos.
 
 ---
 
-## 🏢 Creación de Tablas (`CREATE TABLE`)
+## 2. Creación de Tablas (`CREATE TABLE`)
 
-### ✅ Sintaxis básica:
+La sentencia `CREATE TABLE` permite definir una nueva tabla en la base de datos, especificando sus columnas, tipos de datos y restricciones.
+
+### 2.1. Sintaxis básica
 ```sql
 CREATE TABLE nombre_tabla (
-    columna1 tipo_dato [NOT NULL],
-    columna2 tipo_dato [DEFAULT valor],
-    columna3 tipo_dato [CHECK (condición)],
-    PRIMARY KEY (columna1)
-) [TABLESPACE espacio_de_tabla];
+    columna1 tipo_dato [restricciones],
+    columna2 tipo_dato [restricciones],
+    [TABLESPACE espacio_de_tabla]
+);
 ```
+- **nombre_tabla**: Nombre único de la tabla dentro del esquema.
+- **columnaX**: Nombre de cada columna.
+- **tipo_dato**: Tipo de dato de la columna (ej.: `VARCHAR2(50)`, `NUMBER(10,2)`, `DATE`).
+- **restricciones**: Reglas como `NOT NULL`, `PRIMARY KEY`, etc.
+- **TABLESPACE**: Espacio físico donde se almacenará la tabla (opcional, gestionado por el administrador).
 
-### 🔎 Observaciones:
-- No se pone coma tras la última columna.
-- Se pueden consultar las tablas creadas con `USER_TABLES`.
-- Si una tabla con ese nombre ya existe, dará error.
-
-### 🎯 Creación a partir de `SELECT`
+### 2.2. Ejemplo básico
+Imaginemos que queremos crear una tabla para almacenar información de estudiantes:
 ```sql
-CREATE TABLE nueva_tabla AS
-SELECT * FROM otra_tabla;
+CREATE TABLE estudiantes (
+    id_estudiante NUMBER(5) NOT NULL,
+    nombre VARCHAR2(50),
+    apellido VARCHAR2(50),
+    fecha_nacimiento DATE,
+    nota_media NUMBER(4,2)
+);
 ```
+- `id_estudiante`: Identificador único, obligatorio (no puede ser nulo).
+- `nombre` y `apellido`: Cadenas de hasta 50 caracteres, opcionales.
+- `fecha_nacimiento`: Fecha en formato estándar.
+- `nota_media`: Número con 2 decimales (ej.: 7.85).
 
-### 🔍 Consultas útiles:
+Si intentamos crear otra tabla con el mismo nombre, el SGBD (como Oracle) devolverá un error: *"ORA-00955: name is already used by an existing object"*.
+
+### 2.3. Creación a partir de una consulta (`AS SELECT`)
+Podemos crear una tabla copiando datos de otra tabla existente:
 ```sql
-SELECT * FROM user_tables;        -- ✅ Ver todas las tablas del usuario
-SELECT * FROM user_constraints;   -- ✅ Ver restricciones (PK, FK, etc.)
-SELECT * FROM user_tab_columns;   -- ✅ Ver columnas de las tablas del usuario
+CREATE TABLE estudiantes_destacados
+AS
+SELECT id_estudiante, nombre, apellido
+FROM estudiantes
+WHERE nota_media >= 8.5;
 ```
+- La nueva tabla hereda los tipos de datos de las columnas seleccionadas.
+- No es necesario especificar tipos ni restricciones explícitamente.
+- Las restricciones con nombre (como una `PRIMARY KEY`) no se copian, solo las implícitas (como `NOT NULL`).
+
+### 2.4. Consultar tablas creadas
+Para ver las tablas de nuestro esquema:
+```sql
+SELECT table_name FROM USER_TABLES;
+```
+Esto devuelve una lista de todas las tablas que hemos creado, como `estudiantes` o `estudiantes_destacados`.
 
 ---
 
-## 👀 Vistas
+## 3. Restricciones (`CONSTRAINTS`)
 
-- Son **tablas lógicas** que muestran datos de una o varias tablas reales.
-- Ayudan a simplificar consultas y mejorar la seguridad.
+Las restricciones garantizan la **integridad de los datos** en la base de datos, asegurando que se cumplan ciertas reglas al insertar o modificar información.
 
-### 🔧 Crear una vista:
+### 3.1. Tipos de restricciones
+1. **`PRIMARY KEY`**: Identifica de forma única cada fila. No admite duplicados ni nulos.
+2. **`FOREIGN KEY`**: Relaciona una columna con una `PRIMARY KEY` de otra tabla.
+3. **`NOT NULL`**: Obliga a que la columna tenga un valor.
+4. **`DEFAULT`**: Asigna un valor por defecto si no se especifica.
+5. **`CHECK`**: Limita los valores permitidos según una condición.
+6. **`UNIQUE`**: Impide duplicados, pero permite nulos (a diferencia de `PRIMARY KEY`).
+
+### 3.2. Sintaxis con restricciones
+#### Restricción a nivel de columna
 ```sql
-CREATE OR REPLACE VIEW nombre_vista AS
-SELECT columna1, columna2 FROM tabla_base;
+CREATE TABLE empleados (
+    id_empleado NUMBER(5) CONSTRAINT pk_empleado PRIMARY KEY,
+    nombre VARCHAR2(50) NOT NULL,
+    salario NUMBER(8,2) DEFAULT 1000,
+    edad NUMBER(3) CHECK (edad >= 18)
+);
 ```
+- `pk_empleado`: Nombre de la restricción de clave primaria.
+- `NOT NULL`: El nombre es obligatorio.
+- `DEFAULT 1000`: Si no se especifica salario, se asigna 1000.
+- `CHECK (edad >= 18)`: Solo permite edades mayores o iguales a 18.
 
-- `WITH CHECK OPTION` asegura que los cambios respeten las restricciones de la vista.
-
-### ❌ Eliminar una vista:
+#### Restricción a nivel de tabla
 ```sql
-DROP VIEW nombre_vista;
+CREATE TABLE departamentos (
+    dept_no NUMBER(2),
+    nombre VARCHAR2(30),
+    CONSTRAINT pk_dept PRIMARY KEY (dept_no)
+);
 ```
+- La restricción se define al final, separada de las columnas.
 
-### 📌 Ejemplo práctico con `empleYdepart.sql`
+### 3.3. Ejemplo completo con claves primaria y foránea
 ```sql
-SELECT * FROM emple;
-DESC emple;
-SELECT * FROM depart;
-SELECT * FROM user_views;
+CREATE TABLE departamentos (
+    dept_no NUMBER(2),
+    nombre VARCHAR2(30),
+    CONSTRAINT pk_dept PRIMARY KEY (dept_no)
+);
 
-CREATE OR REPLACE VIEW Empleados30 (EMP_NO, APELLIDO, FECHA_ALT, DEPT_NO)
-AS 
-SELECT EMP_NO, APELLIDO, FECHA_ALT, DEPT_NO FROM EMPLE WHERE DEPT_NO = 30;
+CREATE TABLE empleados (
+    id_empleado NUMBER(5) CONSTRAINT pk_emp PRIMARY KEY,
+    nombre VARCHAR2(50) NOT NULL,
+    dept_no NUMBER(2),
+    CONSTRAINT fk_emp_dept FOREIGN KEY (dept_no) REFERENCES departamentos (dept_no)
+);
+```
+- `fk_emp_dept`: La columna `dept_no` en `empleados` debe coincidir con un valor existente en `departamentos.dept_no`.
 
--- Intentamos insertar un nuevo empleado
-INSERT INTO Empleados30 VALUES (999,'Prueba',SYSDATE,20);
--- No aparece en la vista debido a la restricción del filtro DEPT_NO = 30.
+---
 
--- Solución: incluir `WITH CHECK OPTION`
-CREATE OR REPLACE VIEW Empleados30 (EMP_NO, APELLIDO, FECHA_ALT, DEPT_NO)
-AS 
-SELECT EMP_NO, APELLIDO, FECHA_ALT, DEPT_NO FROM EMPLE WHERE DEPT_NO = 30
+## 4. Modificación de Tablas (`ALTER TABLE`)
+
+La sentencia `ALTER TABLE` permite modificar la estructura de una tabla existente.
+
+### 4.1. Añadir columnas
+```sql
+ALTER TABLE estudiantes
+ADD (email VARCHAR2(100));
+```
+- Añade una columna `email`, inicialmente con valores nulos para las filas existentes.
+
+Si queremos que sea `NOT NULL`, debemos:
+1. Añadirla sin la restricción:
+   ```sql
+   ALTER TABLE estudiantes ADD (email VARCHAR2(100));
+   ```
+2. Rellenarla con datos:
+   ```sql
+   UPDATE estudiantes SET email = 'sin_email@ejemplo.com';
+   ```
+3. Aplicar `NOT NULL`:
+   ```sql
+   ALTER TABLE estudiantes MODIFY (email VARCHAR2(100) NOT NULL);
+   ```
+
+### 4.2. Modificar columnas
+```sql
+ALTER TABLE estudiantes
+MODIFY (nota_media NUMBER(5,2));
+```
+- Amplía la capacidad de `nota_media` a 5 dígitos (ej.: 99.99).
+- No se puede reducir el tamaño si los datos existentes superan el nuevo límite.
+
+### 4.3. Eliminar columnas
+```sql
+ALTER TABLE estudiantes
+DROP COLUMN fecha_nacimiento;
+```
+- Elimina la columna permanentemente. No se puede deshacer.
+
+### 4.4. Gestionar restricciones
+- Añadir:
+  ```sql
+  ALTER TABLE estudiantes
+  ADD CONSTRAINT pk_estudiante PRIMARY KEY (id_estudiante);
+  ```
+- Eliminar:
+  ```sql
+  ALTER TABLE estudiantes
+  DROP CONSTRAINT pk_estudiante;
+  ```
+- Desactivar:
+  ```sql
+  ALTER TABLE empleados
+  DISABLE CONSTRAINT fk_emp_dept;
+  ```
+- Activar:
+  ```sql
+  ALTER TABLE empleados
+  ENABLE CONSTRAINT fk_emp_dept;
+  ```
+
+---
+
+## 5. Eliminación de Tablas
+
+### 5.1. `DROP TABLE`
+Elimina la tabla y su definición por completo:
+```sql
+DROP TABLE estudiantes CASCADE CONSTRAINTS;
+```
+- `CASCADE CONSTRAINTS`: Borra también las restricciones referenciales (como claves foráneas) que dependan de esta tabla.
+
+### 5.2. `TRUNCATE TABLE`
+Elimina todos los datos, pero conserva la estructura:
+```sql
+TRUNCATE TABLE estudiantes;
+```
+- Es más rápido que `DELETE` porque no genera información de rollback.
+- No se puede usar si hay claves foráneas activas referenciando la tabla.
+
+---
+
+## 6. Vistas (`CREATE VIEW`)
+
+Las vistas son tablas virtuales basadas en consultas a tablas reales. No almacenan datos propios, sino que reflejan los datos de las tablas base.
+
+### 6.1. Crear una vista
+```sql
+CREATE OR REPLACE VIEW vista_empleados_dept10
+AS
+SELECT id_empleado, nombre
+FROM empleados
+WHERE dept_no = 10;
+```
+- `OR REPLACE`: Sobreescribe la vista si ya existe.
+- Solo muestra empleados del departamento 10.
+
+### 6.2. Vista con restricciones
+```sql
+CREATE OR REPLACE VIEW vista_empleados_dept10
+AS
+SELECT id_empleado, nombre, dept_no
+FROM empleados
+WHERE dept_no = 10
 WITH CHECK OPTION;
+```
+- `WITH CHECK OPTION`: Impide insertar o modificar filas que no cumplan la condición (`dept_no = 10`).
 
--- Ahora la inserción es válida solo si DEPT_NO es 30
-INSERT INTO Empleados30 VALUES (999,'Prueba',SYSDATE,30);
-
--- Si intentamos agregar un empleado con un departamento diferente a 30, fallará
-INSERT INTO Empleados30 VALUES (999,'Prueba',SYSDATE,20);
+### 6.3. Eliminar una vista
+```sql
+DROP VIEW vista_empleados_dept10;
 ```
 
 ---
 
-## 🏛️ Restricciones
+## 7. Índices
 
-### ⚠️ Tipos:
-1. **`PRIMARY KEY`**: Identifica de forma única cada fila.
-2. **`FOREIGN KEY`**: Relaciona dos tablas asegurando integridad referencial.
-3. **`NOT NULL`**: La columna no puede contener valores nulos.
-4. **`DEFAULT`**: Asigna un valor por defecto si no se especifica otro.
-5. **`CHECK`**: Restringe los valores permitidos en una columna.
-6. **`UNIQUE`**: Evita valores repetidos en una columna.
+Los índices mejoran la velocidad de las consultas al permitir búsquedas más rápidas.
 
-### 🔍 Verificación y creación de claves primarias
+### 7.1. Crear un índice
 ```sql
--- Verificar si ya existen claves primarias en EMPLE y DEPART
-SELECT * FROM USER_CONSTRAINTS WHERE TABLE_NAME IN ('EMPLE', 'DEPART');
+CREATE INDEX idx_nombre ON empleados (nombre);
+```
+- Acelera consultas como `SELECT * FROM empleados WHERE nombre = 'Juan'`.
 
--- Ver estructura de las tablas
-DESC EMPLE;
-DESC DEPART;
+### 7.2. Índices automáticos
+Se crean automáticamente con `PRIMARY KEY` y `UNIQUE`.
 
--- Crear clave primaria en EMPLE si no existe
-ALTER TABLE EMPLE
-ADD CONSTRAINT EMPLE_PK PRIMARY KEY (EMP_NO);
-
--- Crear clave primaria en DEPART si no existe
-ALTER TABLE DEPART
-ADD CONSTRAINT DEPART_PK PRIMARY KEY (DEPT_NO);
+### 7.3. Monitorizar uso
+```sql
+ALTER INDEX idx_nombre MONITORING USAGE;
+SELECT * FROM USER_INDEXES WHERE index_name = 'IDX_NOMBRE';
 ```
 
 ---
 
-## ♻️ Modificación de Tablas (`ALTER TABLE`)
+## 8. Secuencias
 
-- **Añadir columnas:**
+Generan valores numéricos únicos, ideales para claves primarias.
+
+### 8.1. Crear una secuencia
 ```sql
-ALTER TABLE nombre_tabla ADD (nueva_columna tipo_dato);
+CREATE SEQUENCE seq_estudiantes
+START WITH 1
+INCREMENT BY 1
+MAXVALUE 99999;
 ```
 
-- **Modificar columnas:**
+### 8.2. Usar una secuencia
 ```sql
-ALTER TABLE nombre_tabla MODIFY columna_existente tipo_dato;
+INSERT INTO estudiantes (id_estudiante, nombre)
+VALUES (seq_estudiantes.NEXTVAL, 'Ana');
 ```
+- `NEXTVAL`: Genera el siguiente valor.
+- `CURRVAL`: Devuelve el valor actual sin avanzar.
 
-- **Eliminar columnas:**
+### 8.3. Eliminar
 ```sql
-ALTER TABLE nombre_tabla DROP COLUMN columna_a_eliminar;
-```
-
-- **Añadir/eliminar restricciones:**
-```sql
-ALTER TABLE nombre_tabla ADD CONSTRAINT restriccion;
-ALTER TABLE nombre_tabla DROP CONSTRAINT restriccion;
-```
-
----
-
-## 🛠️ Eliminación de Tablas (`DROP TABLE`)
-
-- **Eliminar tabla y restricciones:**
-```sql
-DROP TABLE nombre_tabla CASCADE CONSTRAINTS;
-```
-
-- **Vaciar tabla sin eliminar su estructura:**
-```sql
-TRUNCATE TABLE nombre_tabla;
+DROP SEQUENCE seq_estudiantes;
 ```
 
 ---
 
-## 🏰 Índices
+## 9. Conclusión
 
-- Mejoran el rendimiento de las consultas acelerando la búsqueda de datos.
-- Se crean automáticamente con `PRIMARY KEY` y `UNIQUE`.
-
-### 🆓 Crear un índice:
-```sql
-CREATE INDEX nombre_indice ON nombre_tabla (columna1);
-```
-
----
-
-## ♾️ Secuencias
-
-- Generan números únicos secuenciales, útiles para claves primarias.
-
-### ⚙️ Crear una secuencia:
-```sql
-CREATE SEQUENCE nombre_secuencia START WITH 1 INCREMENT BY 1;
-```
-
-- Obtener el siguiente valor:
-```sql
-SELECT nombre_secuencia.NEXTVAL FROM dual;
-```
-
-- Eliminar una secuencia:
-```sql
-DROP SEQUENCE nombre_secuencia;
-```
-
----
-
-## 📈 Monitorización de índices
-
-- Para saber si un índice se usa:
-```sql
-ALTER INDEX nombre_indice MONITORING USAGE;
-```
-- Para dejar de monitorizar:
-```sql
-ALTER INDEX nombre_indice NOMONITORING USAGE;
-```
-Para poder **ver lo que se ha creado** correctamente el indice se usa:
-```sql
-SELECT * FROM USER_INDEXES;
-```
----
-
-## 🎯 Conclusión
-
-- DDL nos permite definir la estructura de la base de datos de manera organizada.
-- Hay que usar `DROP`, `TRUNCATE` y `ALTER` con cuidado, porque no se pueden deshacer.
-- Las restricciones ayudan a mantener la integridad de los datos.
-- Las vistas y los índices mejoran la eficiencia y seguridad.
-- Las secuencias son útiles para generar identificadores únicos.
+El DDL es esencial para diseñar y mantener bases de datos robustas. Con `CREATE`, `ALTER` y `DROP`, definimos la estructura; las restricciones aseguran la integridad; y herramientas como vistas, índices y secuencias optimizan su uso. Su naturaleza permanente exige precaución y buena planificación.
 
