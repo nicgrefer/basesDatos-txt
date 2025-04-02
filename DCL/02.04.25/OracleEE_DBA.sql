@@ -20,7 +20,7 @@ IDENTIFIED by USUARIO;
 --PASSWORD EXPIRE;
 
 --Nota
---al final hay algun error y no detecta el usuario al poner qye tenga que cambiar la contraseña
+--al final hay algun error y no detecta el usuario al poner qUe tenga que cambiar la contraseña
 
 
 --1.1 Es necesario darle privilegio para conectarse y para realizar operaciones (roles CONNECT y RESOURCE)
@@ -46,39 +46,34 @@ CREATE table usuario3.tabla_a(
     col2     varchar2(100)
 );
 
-CREATE table usuario3.tabla_a(
-    col1     integer,
-    col2     varchar2(100)
-);
-DROP user usuario3;
-DROP user usuario3 cascade;
--- Ahora como tiene una tabla no se puede hacer de forma 'normal' por lo que ay que poner CASCADE
+DROP user usuario3; --❌ Da error porque tiene tablas en su interior por lo tanto......
+DROP user usuario3 cascade; --  ay que poner CASCADE --> Correcto ✅
 
 -----------Privilegios-------------
 select * from SYSTEM_PRIVILEGE_MAP; -- 6 Mapa que presenta todos los privilegios existentes
 
--- Privilegio del sistema 
+-- Privilegios del sistema (dar y quitar)
 --- GRANT ->Dar privilegios a un roll || REVOKE -> quitar privilegios
 
 -- 7 Trabajamos en la siguiente estructura de usuarios
--- DBA -->user1 --> user2
--->Creamos usuarios
+-- DBA -(da privilegios a)-> user1 -(da privilegios a)-> user2
+--  ->1 Creamos usuarios
 CREATE USER user1 IDENTIFIED by user1;
 CREATE USER user2 IDENTIFIED by user2;
 
--->Damos previlegios conexion
+--  ->2 Damos previlegios conexion
 GRANT CONNECT to user1;
 GRANT CONNECT to user2;
 
--->Compruebo como DBA que los usuaris an recibido esos privilegios del sistema
-SELECT * FROM DBA_SYS_PRIVS WHERE GRANTEE IN ('USER1', 'USER2');
-SELECT * FROM DBA_ROLE_PRIVS WHERE GRANTEE IN ('USER1', 'USER2');
+--  ->3 Compruebo como DBA que los usuarios an recibido los privilegios del sistema
+SELECT * FROM DBA_SYS_PRIVS WHERE GRANTEE IN ('USER1', 'USER2'); -- debuelbe los privilegios de ...
+SELECT * FROM DBA_ROLE_PRIVS WHERE GRANTEE IN ('USER1', 'USER2'); -- debuelbe los roles de ...
 
 
---> asignar al usuario 1 privilegios para crear usuarios
+--   ->4 asignar a user1 privilegios para crear usuarios
 GRANT CREATE USER TO user1;
 
--- 9. Provamos la opcion with amount objet
+-- 9. Provamos la opcion with admin objet
 --->Otorgamos privilegios para poder crear tablas (con admin option) y secuencas 
 
 GRANT CREATE TABLE TO user1 WITH ADMIN OPTION;
