@@ -49,10 +49,10 @@ CREATE table usuario3.tabla_a(
 DROP user usuario3; --❌ Da error porque tiene tablas en su interior por lo tanto......
 DROP user usuario3 cascade; --  ay que poner CASCADE --> Correcto ✅
 
------------Privilegios-------------
+-----------Privilegios del sistema (dar y quitar)-------------
 select * from SYSTEM_PRIVILEGE_MAP; -- 6 Mapa que presenta todos los privilegios existentes
 
--- Privilegios del sistema (dar y quitar)
+
 --- GRANT ->Dar privilegios a un roll || REVOKE -> quitar privilegios
 
 -- 7 Trabajamos en la siguiente estructura de usuarios
@@ -80,16 +80,36 @@ GRANT CREATE TABLE TO user1 WITH ADMIN OPTION;
 GRANT CREATE SEQUENCE TO user1;
 
 
+SELECT * from DBA_SYS_PRIVS;
+
+
+-- 10 Quitamos el privilegio de crear tablas al user1
+REVOKE CREATE table from user1;
 
 
 
+------------Privilegios en Objetos------------
+
+-- Las instrucciones son iguales pero aqui ay que marcar sobre que objeto se aplica 
+
+--------.............------
+
+--Los 2 usuarios necesitan cuota para introducir datos en sus tablas
+
+ALTER USER user1 QUOTA 100m on users;
+ALTER USER user2 QUOTA 100m on users;
 
 
+----------ROLES----------
 
+-- Crear rol
 
+CREATE ROLE macarena;
 
+-- Dar 'poderes'
 
+GRANT CONNECT, RESOURCE, create any table to macarena;
 
-
-
-
+SELECT * FROM DBA_ROLES order by 1;
+SELECT * FROM DBA_SYS_PRIVS order by 1;
+SELECT * FROM DBA_TAB_PRIVS order by 1;
